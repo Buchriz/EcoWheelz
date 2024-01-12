@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">EcoWheelzTest1</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="API_Key" templateMergeStrategy="preserve" translatable="false">AIzaSyC_4Pvf3asaPiFGyqdvxAUwX2nRmfPhZ0A</string>
+</resources>

@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/primary"
+    tools:context=".SettingActivity"
+    android:layoutDirection="ltr">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/btnBackS"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/back_button"
+            android:padding="12dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:layout_centerInParent="true"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="27dp"
+            />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:background="@drawable/round_background_settings"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/nightModeIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/night_mode_icon"
+                android:padding="2dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Night Mode"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="17dp"
+                android:layout_toEndOf="@+id/nightModeIcon"
+                android:layout_marginLeft="13dp"
+                />
+
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swNightMode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:switchMinWidth="50dp"
+                android:theme="@style/nightModeSwitch"
+                tools:ignore="TouchTargetSizeCheck" />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/ChangeHLocLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="25dp"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:background="@drawable/round_background_settings"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/changeHLocIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/change_home_location_icon"
+                android:padding="2dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Change Home Location"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="17dp"
+                android:layout_toEndOf="@+id/changeHLocIcon"
+                android:layout_marginLeft="13dp"
+                />
+
+
+            <Button
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/change_home_location_icon_back"
+                />
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ContactUsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="25dp"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:background="@drawable/round_background_settings"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ContactUstIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/headphones"
+                android:padding="2dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Contact Us"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="17dp"
+                android:layout_toEndOf="@+id/ContactUstIcon"
+                android:layout_marginLeft="13dp"
+                />
+
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/AboutUsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="25dp"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:background="@drawable/round_background_settings"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/AboutUsIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/question_mark"
+                android:padding="2dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="About Us"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="17dp"
+                android:layout_toEndOf="@+id/AboutUsIcon"
+                android:layout_marginLeft="13dp"
+                />
+
+
+
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/LogOutLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="25dp"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:background="@drawable/round_background_settings"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            >
+
+            <ImageView
+                android:id="@+id/LogOutIcon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/log_out_icon"
+                android:padding="2dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Log Out"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:textSize="17dp"
+                android:layout_toEndOf="@+id/LogOutIcon"
+                android:layout_marginLeft="13dp"
+                />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>
