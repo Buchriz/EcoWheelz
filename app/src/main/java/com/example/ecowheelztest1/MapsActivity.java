@@ -63,18 +63,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (!isGPSEnabled()) {
-            // If not enabled, show a dialog to enable GPS
-            showGPSDisabledAlert();
-            return;
-        }
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
+        if (!isGPSEnabled()) {
+            // If not enabled, show a dialog to enable GPS
+            showGPSDisabledAlert();
+        } else {
+            // If GPS is enabled, initialize the map
+            initializeMap();
+        }
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -98,10 +96,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SearchViewCommit(searchView);
 
     }
+    private void initializeMap() {
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(MapsActivity.this);
+    }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
 
-
-
+            initializeMap();
+    }
     private boolean isGPSEnabled() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -131,6 +136,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         alert.show();
     }
 
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
@@ -144,13 +150,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onSuccess(Location location)
             {
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()),17f));
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()),16.7f));
             }
         });
-
-
-
-
     }
 
 
@@ -180,7 +182,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (address != null) {
                         destinationLatLng = new LatLng(address.getLatitude(), address.getLongitude());
                         map.addMarker(new MarkerOptions().position(destinationLatLng));
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 17f), 1000, null);
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
 
                         if (!buttonsAdded) {
                             addStartDriveButtons(query);
@@ -305,8 +307,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void closeStartDriveButtons(RelativeLayout linearLayout)
-    {
+    public void closeStartDriveButtons(RelativeLayout linearLayout) {
         // Remove buttons from the parentLayout
         parentLayout.removeView(linearLayout);
         parentLayout.removeView(backToDestination);
@@ -370,7 +371,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     // Got last known location. In some rare situations this can be null.
                     if (location != null) {
                         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17f), 1000, null);
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.7f), 1000, null);
                     }
                 }
             });
@@ -397,7 +398,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 backToDestination.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 17f), 1000, null);
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
 
                         Animation slideOutAnimationForBackToDes = new TranslateAnimation(0, -300, 0, 0);
                         slideOutAnimationForBackToDes.setDuration(500); // Set the duration of the animation in milliseconds
@@ -417,8 +418,4 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Toast.makeText(this, "פה צריך להתחיל מסלול למיקום החדש", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
-
 }

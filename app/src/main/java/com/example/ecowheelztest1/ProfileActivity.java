@@ -11,15 +11,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private LinearLayout pA;
+    private LinearLayout pA, regiButtonLayout;
     private ImageView btnbackP;
-    private TextView tvName;
-    private Button regi, btnChange;
+    private TextView tvName, alreadyRegistered;
+    private Button register, btnChange;
     private String userName, email, fullName, phoneNumber;
 
     @Override
@@ -28,56 +29,30 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         getSupportActionBar().hide();
         setContentView(R.layout.activity_profile);
 
-        btnbackP = findViewById(R.id.btnBackP);
-        btnbackP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this,MapsActivity.class);
-                startActivity(intent);
-            }
-        });
-
         pA = findViewById(R.id.profileActivity);
+        regiButtonLayout = findViewById(R.id.regiButtonLayout);
+
+        btnbackP = findViewById(R.id.btnBackP);
+        btnbackP.setOnClickListener(this);
+        register = findViewById(R.id.register);
+        register.setOnClickListener(this);
         tvName = findViewById(R.id.tvName);
+        alreadyRegistered = findViewById(R.id.alreadyRegistered);
+        alreadyRegistered.setOnClickListener(this);
 
         Intent intent = getIntent();
-
         userName = intent.getStringExtra("username");
         email = intent.getStringExtra("email");
         fullName = intent.getStringExtra("fullname");
         phoneNumber = intent.getStringExtra("phonenumber");
 
 
-        if (userName == null)
-        {
-            LinearLayout linearLayout = new LinearLayout(this);
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
-            LinearLayout.LayoutParams l = new LinearLayout.LayoutParams(-1,170);
-            l.setMargins(0,100,0,0);
-            linearLayout.setLayoutParams(l);
-
-            regi = new Button(this);
-            
-            LinearLayout.LayoutParams ll = new LinearLayout.LayoutParams(-2,130);
-            ll.gravity = Gravity.CENTER;
-            regi.setLayoutParams(ll);
-
-            regi.setGravity(Gravity.CENTER);
-            regi.setText("הרשם");
-            regi.setTypeface(null, Typeface.BOLD);
-            regi.setTextSize(18);
-            regi.setTextColor(getResources().getColor(R.color.primary));
-            regi.setBackground(getDrawable(R.drawable.register_btn_background));
-            
-            regi.setOnClickListener(this);
-            linearLayout.addView(regi);
-            pA.addView(linearLayout);
-        }
-        else
+        if (userName != null)
         {
             /////////////////////////////////////////////////////////////////////////
             //                   השמה של הפרטים האישיים
             ////////////////////////////////////////////////////////////////////////
+            pA.removeView(regiButtonLayout);
             tvName.setText(userName);
 
             LinearLayout linearLayout = new LinearLayout(this);
@@ -92,7 +67,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             tvfullname.setGravity(Gravity.CENTER);
             tvfullname.setBackground(getDrawable(R.drawable.round_background_settings));
             tvfullname.setText("Full Name: " + fullName);
-//            tvfullname.setBackgroundColor(Color.LTGRAY);
 
 
             TextView tvemail = new TextView(this);
@@ -102,7 +76,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             tvemail.setGravity(Gravity.CENTER);
             tvemail.setBackground(getDrawable(R.drawable.round_background_settings));
             tvemail.setText("Email: " + email);
-//            tvemail.setBackgroundColor(Color.LTGRAY);
 
 
             TextView tvphonenumber = new TextView(this);
@@ -112,7 +85,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             tvphonenumber.setGravity(Gravity.CENTER);
             tvphonenumber.setBackground(getDrawable(R.drawable.round_background_settings));
             tvphonenumber.setText("Phone Number: " + phoneNumber);
-//            tvphonenumber.setBackgroundColor(Color.LTGRAY);
 
 
             LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(-1,200);
@@ -142,8 +114,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             btnChange.setTextColor(Color.WHITE);
             btnChange.setTextSize(16);
             btnChange.setTypeface(null, Typeface.BOLD);
-
-
             btnChange.setBackground(getDrawable(R.drawable.btn_backround));
 
             // Set the position of the Button in the RelativeLayout
@@ -151,6 +121,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             buttonParams.addRule(RelativeLayout.ALIGN_PARENT_END);
             buttonParams.setMargins(0, 0, 10, 10);
             btnChange.setLayoutParams(buttonParams);
+            btnChange.setOnClickListener(this);
 
             relativeLayout.addView(btnChange);
 
@@ -161,14 +132,24 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) 
     {
-        if (regi == v)
+        if (btnbackP == v)
+        {
+            Intent intent = new Intent(ProfileActivity.this,MapsActivity.class);
+            startActivity(intent);
+        }
+        if (register == v)
         {
             Intent intent = new Intent(ProfileActivity.this,RegisterActivity.class);
             startActivity(intent);
         }
+        if (alreadyRegistered == v)
+        {
+            Intent intent = new Intent(ProfileActivity.this,LogInActivity.class);
+            startActivity(intent);
+        }
         if (btnChange == v)
         {
-
+            Toast.makeText(this, "לפתוח דף חדש/דיאלוג לעדכון פרטים", Toast.LENGTH_SHORT).show();
         }
     }
 }

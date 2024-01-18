@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#00897B"
+    tools:context=".LogInActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageView
+            android:id="@+id/btnBackL"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/back_button"
+            android:padding="12dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="LogIn"
+            android:layout_centerInParent="true"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="27dp"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_marginTop="40dp"
+        >
+
+
+        <EditText
+            android:id="@+id/emailLogIn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="email"
+            android:padding="10dp"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:inputType="textEmailAddress"
+
+            />
+
+        <EditText
+            android:id="@+id/phoneLogIn"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:hint="Phone Number"
+            android:padding="10dp"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="40dp"
+            android:inputType="phone"
+            android:maxLength="10"
+            />
+
+
+        <Button
+            android:id="@+id/btnLogIn"
+            android:layout_width="150dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="100dp"
+            android:text="התחבר"
+            android:textStyle="bold"
+            android:background="@drawable/change_personal_details_btn_background"
+            android:textColor="@color/white"
+            android:textSize="23dp"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -65,4 +65,37 @@
     </LinearLayout>
 
 
+    <LinearLayout
+        android:id="@+id/regiButtonLayout"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        >
+
+        <Button
+            android:id="@+id/register"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="הרשם"
+            android:background="@drawable/register_btn_background"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:textColor="@color/primary"
+            />
+
+        <TextView
+            android:id="@+id/alreadyRegistered"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="רשום כבר? התחבר כאן"
+            android:textSize="17dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_marginTop="10dp"
+            />
+
+    </LinearLayout>
+
 </LinearLayout>

@@ -3,7 +3,7 @@
     xmlns:tools ="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/regi_background2"
+    android:background="@drawable/regi_background"
     tools:context=".RegisterActivity"
     android:layoutDirection="ltr"
     >
@@ -85,6 +85,7 @@
         android:textColor="@color/white"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="460dp"
+        android:maxLength="10"
         android:gravity="start" />
 
     <Button
