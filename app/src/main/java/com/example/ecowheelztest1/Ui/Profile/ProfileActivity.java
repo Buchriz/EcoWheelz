@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1;
+package com.example.ecowheelztest1.Ui.Profile;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,13 +15,20 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.ecowheelztest1.R;
+import com.example.ecowheelztest1.Repository.User;
+import com.example.ecowheelztest1.Ui.LogIn.LogInActivity;
+import com.example.ecowheelztest1.Ui.Maps.MapsActivity;
+import com.example.ecowheelztest1.Ui.Register.RegisterActivity;
+
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private LinearLayout pA, regiButtonLayout;
     private ImageView btnbackP;
     private TextView tvName, alreadyRegistered;
     private Button register, btnChange;
-    private String userName, email, fullName, phoneNumber;
+    private String userName, email, fullName ;
+    private int phoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +47,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         alreadyRegistered = findViewById(R.id.alreadyRegistered);
         alreadyRegistered.setOnClickListener(this);
 
-        Intent intent = getIntent();
-        userName = intent.getStringExtra("username");
-        email = intent.getStringExtra("email");
-        fullName = intent.getStringExtra("fullname");
-        phoneNumber = intent.getStringExtra("phonenumber");
+        userName = User.getUserName();
+        email = User.getEmail();
+        fullName = User.getFullName();
+        phoneNumber = User.getPhoneNumber();
 
 
         if (userName != null)
@@ -134,17 +140,17 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     {
         if (btnbackP == v)
         {
-            Intent intent = new Intent(ProfileActivity.this,MapsActivity.class);
+            Intent intent = new Intent(ProfileActivity.this, MapsActivity.class);
             startActivity(intent);
         }
         if (register == v)
         {
-            Intent intent = new Intent(ProfileActivity.this,RegisterActivity.class);
+            Intent intent = new Intent(ProfileActivity.this, RegisterActivity.class);
             startActivity(intent);
         }
         if (alreadyRegistered == v)
         {
-            Intent intent = new Intent(ProfileActivity.this,LogInActivity.class);
+            Intent intent = new Intent(ProfileActivity.this, LogInActivity.class);
             startActivity(intent);
         }
         if (btnChange == v)

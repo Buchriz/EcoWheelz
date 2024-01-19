@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1;
+package com.example.ecowheelztest1.Ui.Register;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,11 +10,16 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.ecowheelztest1.R;
+import com.example.ecowheelztest1.Repository.User;
+import com.example.ecowheelztest1.Ui.Profile.ProfileActivity;
+
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView btnBackR;
     private EditText etuserName, etemail, etfullName, etphoneNumber;
-    private String userName, email, fullName, phoneNumber;
+    private String userName, email, fullName;
+    private int phoneNumber;
     private Button btnCreate;
 
     @Override
@@ -24,14 +29,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
 
         btnBackR = findViewById(R.id.btnBackR);
-        btnBackR.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(RegisterActivity.this,ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-
 
         etuserName = findViewById(R.id.userName);
         etemail = findViewById(R.id.email);
@@ -52,15 +49,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             if (checkErrors() == true)
             {
                 Toast.makeText(this, "נרשמת בהצלחה", Toast.LENGTH_SHORT).show();
+                new User(userName, email,fullName,phoneNumber);
 
                 Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
-                intent.putExtra("username", userName);
-                intent.putExtra("email", email);
-                intent.putExtra("fullname", fullName);
-                intent.putExtra("phonenumber", phoneNumber);
                 startActivity(intent);
 
             }
+        }
+        if (btnBackR == view)
+        {
+            Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -69,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         userName = etuserName.getText().toString();
         email = etemail.getText().toString();
         fullName = etfullName.getText().toString();
-        phoneNumber = etphoneNumber.getText().toString();
+        phoneNumber = Integer.parseInt(etphoneNumber.getText().toString());
 
         if (userName.length()==0)
         {
@@ -89,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return false;
         }
 
-        if (phoneNumber.length() == 0)
+        if (String.valueOf(phoneNumber).length() == 0)
         {
             etphoneNumber.setError("Enter Phone");
             return false;

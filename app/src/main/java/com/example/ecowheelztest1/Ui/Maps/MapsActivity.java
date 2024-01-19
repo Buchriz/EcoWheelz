@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1;
+package com.example.ecowheelztest1.Ui.Maps;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -29,6 +29,9 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
+import com.example.ecowheelztest1.R;
+import com.example.ecowheelztest1.Ui.Profile.ProfileActivity;
+import com.example.ecowheelztest1.Ui.Settings.SettingActivity;
 import com.example.ecowheelztest1.databinding.ActivityMapsBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -105,6 +108,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onRestart() {
         super.onRestart();
 
+        if (isGPSEnabled())
             initializeMap();
     }
     private boolean isGPSEnabled() {
@@ -160,7 +164,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-//                parentLayout.removeView(driveButtonsRelativeLayout);
+                closeStartDriveButtons(driveButtonsRelativeLayout);
 
                 if (query.length() == 0){
                     Toast.makeText(MapsActivity.this, "Enter destination", Toast.LENGTH_SHORT).show();

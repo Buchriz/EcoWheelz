@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1;
+package com.example.ecowheelztest1.Ui.Settings;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -14,6 +14,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
+
+import com.example.ecowheelztest1.R;
+import com.example.ecowheelztest1.Ui.AboutUs.AboutUs;
+import com.example.ecowheelztest1.Ui.Maps.MapsActivity;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -50,7 +54,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     {
         if (v == btnbackS)
         {
-            Intent intent = new Intent(SettingActivity.this,MapsActivity.class);
+            Intent intent = new Intent(SettingActivity.this, MapsActivity.class);
             startActivity(intent);
         }
         if (v == changeHLocLayout)
@@ -63,7 +67,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         }
         if (v == aboutUsLayout)
         {
-            Intent intent = new Intent(SettingActivity.this,AboutUs.class);
+            Intent intent = new Intent(SettingActivity.this, AboutUs.class);
             startActivity(intent);
         }
         if (v == logOutLayout)

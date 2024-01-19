@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1;
+package com.example.ecowheelztest1.Ui.LogIn;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.ecowheelztest1.R;
+import com.example.ecowheelztest1.Ui.Profile.ProfileActivity;
 
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -40,7 +43,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         if (btnBackL == v)
         {
-            Intent intent = new Intent(LogInActivity.this,ProfileActivity.class);
+            Intent intent = new Intent(LogInActivity.this, ProfileActivity.class);
             startActivity(intent);
         }
     }

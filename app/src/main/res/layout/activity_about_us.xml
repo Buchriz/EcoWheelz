@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="#C84600"
     android:layoutDirection="ltr"
-    tools:context=".AboutUs">
+    tools:context=".Ui.AboutUs.AboutUs">
 
     <RelativeLayout
         android:layout_width="match_parent"

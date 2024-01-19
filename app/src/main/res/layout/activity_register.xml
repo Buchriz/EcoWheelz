@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/regi_background"
-    tools:context=".RegisterActivity"
+    tools:context=".Ui.Register.RegisterActivity"
     android:layoutDirection="ltr"
     >
 

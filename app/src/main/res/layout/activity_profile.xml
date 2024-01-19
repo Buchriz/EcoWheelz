@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/primary"
-    tools:context=".ProfileActivity"
+    tools:context=".Ui.Profile.ProfileActivity"
     android:id="@+id/profileActivity"
     android:layoutDirection="ltr"
     >
