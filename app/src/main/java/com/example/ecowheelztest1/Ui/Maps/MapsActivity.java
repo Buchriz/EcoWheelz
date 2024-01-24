@@ -30,7 +30,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.ecowheelztest1.R;
-import com.example.ecowheelztest1.Ui.Profile.ProfileActivity;
 import com.example.ecowheelztest1.Ui.Settings.SettingActivity;
 import com.example.ecowheelztest1.databinding.ActivityMapsBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -344,12 +343,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (id == R.id.home) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        } else if (id == R.id.profile) {
-            Intent intent = new Intent(MapsActivity.this, ProfileActivity.class);
+        }
+        else if (id == R.id.profile) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setClassName(".Ui.Maps.MapsActivity",".Ui.Profile.ProfileActivity");
             startActivity(intent);
-        } else if (id == R.id.settings) {
-            Intent intent1 = new Intent(MapsActivity.this, SettingActivity.class);
-            startActivity(intent1);
+        }
+        else if (id == R.id.settings) {
+            Intent intent = new Intent(MapsActivity.this, SettingActivity.class);
+            startActivity(intent);
         }
 
         return false;
