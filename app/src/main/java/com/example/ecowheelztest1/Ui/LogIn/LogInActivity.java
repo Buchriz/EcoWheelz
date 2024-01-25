@@ -32,10 +32,6 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         etEmailLogIn = findViewById(R.id.emailLogIn);
         etPhoneLogIn = findViewById(R.id.phoneLogIn);
 
-        emailLogIn = etEmailLogIn.getText().toString().trim();
-        phoneLogIn = Integer.parseInt(etPhoneLogIn.getText().toString().trim());
-
-
     }
 
     @Override
@@ -44,6 +40,11 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         {
             Intent intent = new Intent(LogInActivity.this, ProfileActivity.class);
             startActivity(intent);
+        }
+        if (btnLogIn == v)
+        {
+            emailLogIn = etEmailLogIn.getText().toString().trim();
+            phoneLogIn = Integer.parseInt(etPhoneLogIn.getText().toString().trim());
         }
     }
 }

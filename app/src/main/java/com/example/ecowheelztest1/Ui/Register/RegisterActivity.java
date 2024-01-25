@@ -18,17 +18,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private ImageView btnBackR;
     private EditText etuserName, etemail, etfullName, etphoneNumber;
-    private String userName, email, fullName;
+    private String userName,email, fullName;
     private int phoneNumber;
+    private RegisterModule registerModule;
     private Button btnCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_register);
 
         btnBackR = findViewById(R.id.btnBackR);
+        btnBackR.setOnClickListener(this);
 
         etuserName = findViewById(R.id.userName);
         etemail = findViewById(R.id.email);
@@ -46,55 +47,28 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     {
         if (btnCreate == view)
         {
-            if (checkErrors() == true)
-            {
+            userName = etuserName.getText().toString();
+            email = etemail.getText().toString();
+            fullName = etfullName.getText().toString();
+            phoneNumber = Integer.parseInt(etphoneNumber.getText().toString());
+
+            registerModule = new RegisterModule(userName,email,fullName,phoneNumber);
+
+//            if (registerModule.checkErrors())
+//            {
                 Toast.makeText(this, "נרשמת בהצלחה", Toast.LENGTH_SHORT).show();
                 new User(userName, email,fullName,phoneNumber);
 
                 Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
                 startActivity(intent);
-
-            }
+            //}
         }
-        if (btnBackR == view)
-        {
-            Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
+        if (btnBackR == view) {
+            Intent intent = new Intent(RegisterActivity.this,ProfileActivity.class);
             startActivity(intent);
         }
     }
 
-    public boolean checkErrors()
-    {
-        userName = etuserName.getText().toString();
-        email = etemail.getText().toString();
-        fullName = etfullName.getText().toString();
-        phoneNumber = Integer.parseInt(etphoneNumber.getText().toString());
 
-        if (userName.length()==0)
-        {
-            etuserName.setError("Enter UserName");
-            return false;
-        }
-
-        if (email.length() == 0)
-        {
-            etemail.setError("Enter Email");
-            return false;
-        }
-
-        if (fullName.length() == 0)
-        {
-            etfullName.setError("Enter Full Name");
-            return false;
-        }
-
-        if (String.valueOf(phoneNumber).length() == 0)
-        {
-            etphoneNumber.setError("Enter Phone");
-            return false;
-        }
-
-        return true;
-    }
 
 }
