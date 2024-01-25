@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "291298502962",
+    "project_id": "ecowheelz",
+    "storage_bucket": "ecowheelz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:291298502962:android:2cf9414f7a8544dad00f2b",
+        "android_client_info": {
+          "package_name": "com.example.ecowheelztest1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAipn0-WfVLcNmQM86gTamTL4axy1l21dg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
