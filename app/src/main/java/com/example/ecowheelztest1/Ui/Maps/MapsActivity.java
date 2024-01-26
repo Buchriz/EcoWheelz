@@ -1,5 +1,6 @@
 package com.example.ecowheelztest1.Ui.Maps;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -22,6 +23,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
@@ -62,6 +66,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient fusedLocationClient;
 
     private MapsModule mapsModule;
+    
 
 
     @Override
@@ -78,6 +83,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             // If GPS is enabled, initialize the map
             initializeMap();
         }
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            activityResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -101,6 +113,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SearchViewCommit(searchView);
 
     }
+
+    private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
+        @Override
+        public void onActivityResult(Boolean b) {
+            if (b)
+            {
+                Toast.makeText(MapsActivity.this, "Permission granted! Restart This app", Toast.LENGTH_SHORT).show();
+            }
+        }
+    });
+    
     private void initializeMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(MapsActivity.this);

@@ -27,8 +27,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView btnbackP;
     private TextView tvName, alreadyRegistered;
     private Button register, btnChange;
-    private String userName, email, fullName ;
-    private int phoneNumber;
+    private String userName, email, fullName,phoneNumber ;
+    private ProfileModule profileModule;
 
 
 
@@ -48,14 +48,25 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         alreadyRegistered = findViewById(R.id.alreadyRegistered);
         alreadyRegistered.setOnClickListener(this);
 
-        userName = User.getUserName();
-        email = User.getEmail();
-        fullName = User.getFullName();
-        phoneNumber = User.getPhoneNumber();
+
+        profileModule = new ProfileModule(this);
 
 
-        if (userName != null)
+        //////////////////////////////////////////////
+        //    לא עובד עקב שימוש לא נכון ב intent
+        //////////////////////////////////////////////
+        Intent intent = getIntent();
+        boolean b = intent.getBooleanExtra("key",false);
+
+        if (b)
         {
+
+            User user = profileModule.getUser();
+            userName = user.getUserName();
+            email = user.getEmail();
+            fullName = user.getFullName();
+            phoneNumber = user.getPhoneNumber();
+
             /////////////////////////////////////////////////////////////////////////
             //                   השמה של הפרטים האישיים
             ////////////////////////////////////////////////////////////////////////

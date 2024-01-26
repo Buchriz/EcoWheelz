@@ -1,78 +1,85 @@
 package com.example.ecowheelztest1.Ui.Register;
 
+import android.content.Context;
+
+import com.example.ecowheelztest1.Repository.Repository;
+import com.example.ecowheelztest1.Repository.User;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class RegisterModule {
 
-    private String userName, email, fullName;
-    private int phoneNumber;
+    private String userName, email, fullName, phoneNumber;
+    Repository repository;
+    private Context context;
 
-    public RegisterModule(String userName, String email, String fullName, int phoneNumber) {
+    public RegisterModule(Context context,String userName, String email, String fullName, String phoneNumber) {
         this.userName = userName;
         this.email = email;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
+        repository = new Repository(context);
+        this.context = context;
+    }
+    Queue<String> checkErrors()
+    {
+        Queue<String> qErrors = new LinkedList<>();
+
+        //////////////////////
+        //   בדיקות שם משתמש
+        /////////////////////
+        if (this.userName.length()==0)
+        {
+            qErrors.add("Enter UserName");
+            //return false;
+        }
+
+        //////////////////////
+        //   בדיקות אימייל
+        /////////////////////
+        if (email.length() == 0)
+        {
+            qErrors.add("Enter Email");
+            //return false;
+        }
+        int x = 0;
+        boolean b = false;
+        while (x <= email.length())
+        {
+            if (email.charAt(x) == '@')
+                b = true;
+            x++;
+        }
+        if (!b){
+            qErrors.add("Email needs a @");
+            //return false;
+        }
+
+        //////////////////////
+        //   בדיקות שם מלא
+        /////////////////////
+        if (fullName.length() == 0)
+        {
+            qErrors.add("Enter Full Name");
+            //return false;
+        }
+
+
+        ////////////////////////
+        //  בדיקות מספר טלפון
+        ////////////////////////
+        if (String.valueOf(phoneNumber).length() == 0)
+        {
+            qErrors.add("Enter Phone");
+            //return false;
+        }
+
+        return qErrors;
     }
 
-    public String getUserName() {
-        return userName;
+    void OnSuccess(){
+        User user = new User(userName, email,fullName,phoneNumber);
+        repository.addUser(user);
     }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public int getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(int phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-
-
-//    boolean checkErrors()
-//    {
-//
-//        if (this.userName.length()==0)
-//        {
-//            etuserName.setError("Enter UserName");
-//            return false;
-//        }
-//
-//        if (email.length() == 0)
-//        {
-//            etemail.setError("Enter Email");
-//            return false;
-//        }
-//
-//        if (fullName.length() == 0)
-//        {
-//            etfullName.setError("Enter Full Name");
-//            return false;
-//        }
-//
-//        if (String.valueOf(phoneNumber).length() == 0)
-//        {
-//            etphoneNumber.setError("Enter Phone");
-//            return false;
-//        }
-//
-//        return true;
-//    }
 }

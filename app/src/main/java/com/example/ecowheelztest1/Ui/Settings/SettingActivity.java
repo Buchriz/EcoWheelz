@@ -1,6 +1,7 @@
 package com.example.ecowheelztest1.Ui.Settings;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
 import com.example.ecowheelztest1.R;
+import com.example.ecowheelztest1.Repository.Repository;
 import com.example.ecowheelztest1.Ui.AboutUs.AboutUs;
 import com.example.ecowheelztest1.Ui.Maps.MapsActivity;
 
@@ -25,6 +27,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView btnbackS;
     private LinearLayout changeHLocLayout, contactUsLayout, aboutUsLayout, logOutLayout;
     private static SwitchCompat swNightMode;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +97,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View view)
             {
-                Toast.makeText(SettingActivity.this, "צריך לנתק משתמש מהאפליקציה", Toast.LENGTH_SHORT).show();
+                Repository repository = new Repository(SettingActivity.this);
+                repository.LogOut();
+                Toast.makeText(SettingActivity.this, "התנתקת בהצלחה", Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });

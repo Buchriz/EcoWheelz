@@ -2,45 +2,44 @@ package com.example.ecowheelztest1.Repository;
 
 public class User {
 
-    private static String userName, email, fullName;
-    private static int phoneNumber;
+    private static String userName, email, fullName, phoneNumber;
 
-    public User(String userName, String email, String fullName, int phoneNumber) {
+    public User(String userName, String email, String fullName, String phoneNumber) {
         this.userName = userName;
         this.email = email;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
     }
 
-    public static String getUserName() {
+    public String getUserName() {
         return userName;
     }
 
-    public static void setUserName(String userName) {
+    public void setUserName(String userName) {
         User.userName = userName;
     }
 
-    public static String getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public static void setEmail(String email) {
+    public void setEmail(String email) {
         User.email = email;
     }
 
-    public static String getFullName() {
+    public String getFullName() {
         return fullName;
     }
 
-    public static void setFullName(String fullName) {
+    public void setFullName(String fullName) {
         User.fullName = fullName;
     }
 
-    public static int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public static void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         User.phoneNumber = phoneNumber;
     }
 }

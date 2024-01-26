@@ -19,6 +19,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     private String emailLogIn;
     private int phoneLogIn;
     private Button btnLogIn;
+    private LogInModule logInModule;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +46,11 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         {
             emailLogIn = etEmailLogIn.getText().toString().trim();
             phoneLogIn = Integer.parseInt(etPhoneLogIn.getText().toString().trim());
+
+            logInModule = new LogInModule(this, emailLogIn,phoneLogIn);
+            logInModule.LogIn();
+            Intent intent = new Intent(LogInActivity.this, ProfileActivity.class);
+            startActivity(intent);
         }
     }
 }

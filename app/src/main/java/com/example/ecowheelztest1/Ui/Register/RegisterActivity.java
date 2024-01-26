@@ -11,17 +11,18 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ecowheelztest1.R;
-import com.example.ecowheelztest1.Repository.User;
 import com.example.ecowheelztest1.Ui.Profile.ProfileActivity;
+
+import java.util.Queue;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView btnBackR;
     private EditText etuserName, etemail, etfullName, etphoneNumber;
-    private String userName,email, fullName;
-    private int phoneNumber;
+    private String userName,email, fullName, phoneNumber;
     private RegisterModule registerModule;
     private Button btnCreate;
+    private Queue<String> queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,23 +46,30 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     public void onClick(View view)
     {
-        if (btnCreate == view)
-        {
+        if (btnCreate == view) {
+
             userName = etuserName.getText().toString();
             email = etemail.getText().toString();
             fullName = etfullName.getText().toString();
-            phoneNumber = Integer.parseInt(etphoneNumber.getText().toString());
+            phoneNumber = etphoneNumber.getText().toString();
 
-            registerModule = new RegisterModule(userName,email,fullName,phoneNumber);
 
-//            if (registerModule.checkErrors())
+            registerModule = new RegisterModule(this,userName, email, fullName, phoneNumber);
+
+//            queue = registerModule.checkErrors();
+//
+//            while (!queue.isEmpty())
 //            {
-                Toast.makeText(this, "נרשמת בהצלחה", Toast.LENGTH_SHORT).show();
-                new User(userName, email,fullName,phoneNumber);
+//                Toast.makeText(this, queue.remove(), Toast.LENGTH_SHORT).show();
+//            }
 
-                Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
-                startActivity(intent);
-            //}
+            registerModule.OnSuccess();
+            Toast.makeText(this, "נרשמת בהצלחה", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
+            intent.putExtra("key",true);
+            startActivity(intent);
+
         }
         if (btnBackR == view) {
             Intent intent = new Intent(RegisterActivity.this,ProfileActivity.class);
