@@ -35,6 +35,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.example.ecowheelztest1.R;
 import com.example.ecowheelztest1.Ui.Profile.ProfileActivity;
+import com.example.ecowheelztest1.Ui.Settings.NightModeSwitch;
 import com.example.ecowheelztest1.Ui.Settings.SettingActivity;
 import com.example.ecowheelztest1.databinding.ActivityMapsBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -44,6 +45,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
@@ -66,7 +68,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FusedLocationProviderClient fusedLocationClient;
 
     private MapsModule mapsModule;
-    
+    private NightModeSwitch nightModeSwitch;
 
 
     @Override
@@ -90,6 +92,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             activityResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         }
 
+//        boolean[] isGPSEnabled = EnableGPS();
+//        if (isGPSEnabled[0])
+//        {
+//            Toast.makeText(MapsActivity.this, "יש GPS", Toast.LENGTH_SHORT).show();
+//        }
+//        else
+//        {
+//            Toast.makeText(MapsActivity.this, "אין GPS", Toast.LENGTH_SHORT).show();
+//        }
 
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -99,6 +110,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         navView = findViewById(R.id.navDrawer);
         navView.setItemIconTintList(null);
         navView.setNavigationItemSelectedListener(this);
+        nightModeSwitch = new NightModeSwitch();
 
 
         menu = findViewById(R.id.menu);
@@ -123,7 +135,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     });
-    
+
+
+//    public boolean[] EnableGPS()
+//    {
+//        boolean[] b = {false};
+//        LocationRequest locationRequest = LocationRequest.create();
+//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//        locationRequest.setInterval(10000);
+//        locationRequest.setFastestInterval(10000/2);
+//
+//        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+//        builder.addLocationRequest(locationRequest);
+//        builder.setAlwaysShow(true);
+//
+//        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
+//        Task<LocationSettingsResponse> task = settingsClient.checkLocationSettings(builder.build());
+//        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+//            @Override
+//            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+//
+//                b[0] = true;
+//            }
+//        });
+//        task.addOnFailureListener(this, new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                b[0] = false;
+//            }
+//        });
+//        return b;
+//    }
+
+
     private void initializeMap() {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(MapsActivity.this);
@@ -170,6 +214,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.setMinZoomPreference(3.0f);
+
+        if (nightModeSwitch.GetNightModSwitch())
+        {
+            map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_dark_mode));
+            searchView.setBackground(getDrawable(R.drawable.et_style_dark_mode));
+        }
+        else {
+            map.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_light_mode));
+            searchView.setBackground(getDrawable(R.drawable.et_style));
+        }
+
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;

@@ -7,11 +7,11 @@ public class NightModeSwitch
     public NightModeSwitch()
     {}
 
-    public static boolean GetNightModSwitch()
+    public boolean GetNightModSwitch()
     {
         return flag;
     }
-    public static void SetNightModSwitch(boolean f)
+    public void SetNightModSwitch(boolean f)
     {
         flag = f;
     }

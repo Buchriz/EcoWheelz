@@ -10,14 +10,14 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ecowheelztest1.R;
+import com.example.ecowheelztest1.Ui.Maps.MapsActivity;
 import com.example.ecowheelztest1.Ui.Profile.ProfileActivity;
 
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView btnBackL;
     private EditText etEmailLogIn, etPhoneLogIn;
-    private String emailLogIn;
-    private int phoneLogIn;
+    private String emailLogIn,phoneLogIn;
     private Button btnLogIn;
     private LogInModule logInModule;
     @Override
@@ -45,11 +45,11 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         if (btnLogIn == v)
         {
             emailLogIn = etEmailLogIn.getText().toString().trim();
-            phoneLogIn = Integer.parseInt(etPhoneLogIn.getText().toString().trim());
+            phoneLogIn = etPhoneLogIn.getText().toString().trim();
 
             logInModule = new LogInModule(this, emailLogIn,phoneLogIn);
             logInModule.LogIn();
-            Intent intent = new Intent(LogInActivity.this, ProfileActivity.class);
+            Intent intent = new Intent(LogInActivity.this, MapsActivity.class);
             startActivity(intent);
         }
     }

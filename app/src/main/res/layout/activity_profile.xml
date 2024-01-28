@@ -12,6 +12,7 @@
     >
 
     <RelativeLayout
+        android:id="@+id/headertitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -37,6 +38,7 @@
 
 
     <LinearLayout
+        android:id="@+id/profilepic"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">

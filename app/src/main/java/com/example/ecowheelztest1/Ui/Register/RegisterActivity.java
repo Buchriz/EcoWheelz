@@ -67,7 +67,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             Toast.makeText(this, "נרשמת בהצלחה", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(RegisterActivity.this, ProfileActivity.class);
-            intent.putExtra("key",true);
             startActivity(intent);
 
         }

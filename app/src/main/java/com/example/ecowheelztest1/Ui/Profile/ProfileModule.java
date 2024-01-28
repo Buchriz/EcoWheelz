@@ -7,7 +7,7 @@ import com.example.ecowheelztest1.Repository.User;
 
 public class ProfileModule {
 
-    Repository repository;
+    private Repository repository;
     private Context context;
 
     public ProfileModule(Context context) {
@@ -15,7 +15,19 @@ public class ProfileModule {
         this.context = context;
     }
 
-    public User getUser(){
+    public User getUserRegister(){
         return repository.getUserFromSQLite();
     }
+    public User getUserLogIn(){
+        return repository.getLogIn();
+    }
+    public boolean getIsRegistered()
+    {
+        return repository.getIsRegistered();
+    }
+    public boolean getIsLoggedIn()
+    {
+        return repository.getIsLoggedIn();
+    }
+
 }

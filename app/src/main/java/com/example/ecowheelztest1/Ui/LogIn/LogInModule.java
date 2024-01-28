@@ -5,12 +5,11 @@ import android.content.Context;
 import com.example.ecowheelztest1.Repository.Repository;
 
 public class LogInModule {
-    private String emailLogIn;
-    private int phoneLogIn;
+    private String emailLogIn,phoneLogIn;
     private Context context;
-    Repository repository;
+    private Repository repository;
 
-    public LogInModule(Context context, String emailLogIn, int phoneLogIn) {
+    public LogInModule(Context context, String emailLogIn, String phoneLogIn) {
         this.emailLogIn = emailLogIn;
         this.phoneLogIn = phoneLogIn;
         this.context = context;
@@ -19,7 +18,7 @@ public class LogInModule {
 
     public void LogIn()
     {
-        repository.LogIn(emailLogIn,String.valueOf(phoneLogIn));
+        repository.LogIn(emailLogIn,phoneLogIn);
     }
 
 

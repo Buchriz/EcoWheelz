@@ -11,7 +11,7 @@ import java.util.Queue;
 public class RegisterModule {
 
     private String userName, email, fullName, phoneNumber;
-    Repository repository;
+    private Repository repository;
     private Context context;
 
     public RegisterModule(Context context,String userName, String email, String fullName, String phoneNumber) {
@@ -81,5 +81,6 @@ public class RegisterModule {
     void OnSuccess(){
         User user = new User(userName, email,fullName,phoneNumber);
         repository.addUser(user);
+        repository.setIsRegistered(true);
     }
 }
