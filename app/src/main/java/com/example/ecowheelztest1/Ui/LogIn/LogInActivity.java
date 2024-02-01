@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -48,9 +49,14 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             phoneLogIn = etPhoneLogIn.getText().toString().trim();
 
             logInModule = new LogInModule(this, emailLogIn,phoneLogIn);
-            logInModule.LogIn();
-            Intent intent = new Intent(LogInActivity.this, MapsActivity.class);
-            startActivity(intent);
+            boolean isExist = logInModule.LogIn();
+            if (isExist){
+                Intent intent = new Intent(LogInActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }else {
+                Toast.makeText(this, "משתמש לא נמצא", Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 }

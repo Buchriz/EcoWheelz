@@ -3,7 +3,6 @@ package com.example.ecowheelztest1.Repository;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.widget.Toast;
 
 import com.example.ecowheelztest1.DB.FireBase;
 import com.example.ecowheelztest1.DB.MyDatabaseHelper;
@@ -96,7 +95,7 @@ public class Repository {
 
 
 
-    public void LogIn(String emailLogIn, String phoneLogIn)
+    public boolean LogIn(String emailLogIn, String phoneLogIn)
     {
         fireBase.LogIn(emailLogIn,phoneLogIn);
 
@@ -126,8 +125,8 @@ public class Repository {
         }
 
         if (!same) {
-            Toast.makeText(context, "משתמש לא נמצא", Toast.LENGTH_SHORT).show();
             isLoggedIn = false;
+            return false;
         }
         else
         {
@@ -138,6 +137,7 @@ public class Repository {
             isLoggedIn = true;
             setSharedPreferences();
         }
+        return true;
 
     }
     public User getLogIn(){

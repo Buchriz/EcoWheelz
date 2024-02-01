@@ -16,9 +16,9 @@ public class LogInModule {
         repository = new Repository(context);
     }
 
-    public void LogIn()
+    public boolean LogIn()
     {
-        repository.LogIn(emailLogIn,phoneLogIn);
+        return repository.LogIn(emailLogIn,phoneLogIn);
     }
 
 
