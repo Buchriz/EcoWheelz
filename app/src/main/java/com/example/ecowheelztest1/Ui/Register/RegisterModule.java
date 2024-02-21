@@ -3,7 +3,6 @@ package com.example.ecowheelztest1.Ui.Register;
 import android.content.Context;
 
 import com.example.ecowheelztest1.Repository.Repository;
-import com.example.ecowheelztest1.Repository.User;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -11,7 +10,7 @@ import java.util.Queue;
 public class RegisterModule {
 
     private String userName, email, fullName, phoneNumber;
-    private Repository repository;
+    private static Repository repository;
     private Context context;
 
     public RegisterModule(Context context,String userName, String email, String fullName, String phoneNumber) {
@@ -78,9 +77,7 @@ public class RegisterModule {
         return qErrors;
     }
 
-    void OnSuccess(){
-        User user = new User(userName, email,fullName,phoneNumber);
-        repository.addUser(user);
-        repository.setIsRegistered(true);
+    boolean OnSuccess(){
+        return repository.addUser(userName,email,fullName,phoneNumber);
     }
 }

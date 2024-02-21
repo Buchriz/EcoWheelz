@@ -9,105 +9,110 @@ import com.example.ecowheelztest1.DB.MyDatabaseHelper;
 
 public class Repository {
 
-    private FireBase fireBase;
-    private MyDatabaseHelper databaseHelper;
-    private static boolean isRegistered;
-    private static boolean isLoggedIn;
-    private static String userNameLogin, emailLogin, fullNameLogin, phoneNumberLogin;
-    private Context context;
+    private final FireBase fireBase;
+    private final MyDatabaseHelper databaseHelper;
+    private final Context context;
 
     private SharedPreferences sharedPreferences;
-    private void setSharedPreferences()
+    private final SharedPreferences.Editor editor;
+    public void setSharedPreferences(User user)
     {
-        sharedPreferences = context.getSharedPreferences("sharedPreferences",Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putBoolean("isRegistered",isRegistered);
-        editor.putBoolean("isLoggedIn",isLoggedIn);
+        editor.putString("row_id", user.getRow_id());
+        editor.putString("userName", user.getUserName());
+        editor.putString("email", user.getEmail());
+        editor.putString("fullName",user.getFullName());
+        editor.putString("phone", user.getPhoneNumber());
+        editor.putString("homeLocation",user.getHomeLocation());
+        editor.putString("workLocation", user.getWorkLocation());
 
         editor.apply();
     }
-    private void getSharedPreferences()
+    public User getSharedPreferences()
     {
-        sharedPreferences = context.getSharedPreferences("sharedPreferences",Context.MODE_PRIVATE);
-        isRegistered = sharedPreferences.getBoolean("isRegistered",true);
-        isLoggedIn = sharedPreferences.getBoolean("isLoggedIn",true);
+        String row_id;
+        String userName;
+        String email;
+        String fullName;
+        String phone;
+        String homeLocation;
+        String workLocation;
+
+        if (sharedPreferences.getBoolean("isLoggedIn", false))
+        {
+            row_id = sharedPreferences.getString("row_id",null);
+            userName = sharedPreferences.getString("userName",null);
+            email = sharedPreferences.getString("email",null);
+            fullName = sharedPreferences.getString("fullName",null);
+            phone = sharedPreferences.getString("phone", null);
+            homeLocation = sharedPreferences.getString("homeLocation",null);
+            workLocation = sharedPreferences.getString("workLocation",null);
+
+            return new User(userName,email,fullName,phone,row_id,homeLocation,workLocation);
+        }
+
+        return null;
     }
 
     public Repository(Context context) {
         fireBase = new FireBase();
         databaseHelper = new MyDatabaseHelper(context);
         this.context = context;
+        sharedPreferences = context.getSharedPreferences("sharedPreferences",Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
     }
 
-    public void addUser(User user)
-    {
-        addNewUserToFireBase(user);
-        addNewUserToSQLite(user);
-    }
-    public boolean getIsRegistered()
-    {
-        return isRegistered;
-    }
-    public void setIsRegistered(boolean b)
-    {
-        isRegistered = b;
-    }
+    public boolean addUser(String userName, String email, String fullName, String phoneNumber) {
 
+        boolean isAdded = addNewUserToSQLite(userName,email,fullName,phoneNumber);
+        if (isAdded)
+            addNewUserToFireBase(email,phoneNumber);
+        return isAdded;
+    }
     public boolean getIsLoggedIn() {
-        return isLoggedIn;
+        return sharedPreferences.getBoolean("isLoggedIn",false);
+    }
+    public void setIsLoggedIn(boolean c) {
+        editor.putBoolean("isLoggedIn",c);
     }
 
-    public void setIsLoggedIn(boolean b) {
-        isLoggedIn = b;
+    public boolean addNewUserToSQLite(String userName, String email, String fullName, String phoneNumber) {
+        return databaseHelper.addUser(userName,email,fullName,phoneNumber);
     }
 
-    public void addNewUserToSQLite(User user)
+    public void addNewUserToFireBase(String email, String phoneNumber) {
+        fireBase.register(email,phoneNumber);
+    }
+
+    public void updateData(String row_id, String username, String email, String fullname, String phonenumber) {
+        databaseHelper.updateData(row_id,username,email,fullname,phonenumber);
+        setSharedPreferences(new User(username,email,fullname,phonenumber,row_id,getSharedPreferences().getHomeLocation(),getSharedPreferences().getWorkLocation()));
+    }
+
+    public void updateHomeLocation(String homeLoc)
     {
-        databaseHelper.addUser(user.getUserName(), user.getEmail(), user.getFullName(), user.getPhoneNumber());
+        //databaseHelper.updateHomeLocation(getSharedPreferences().getRow_id(),homeLoc);
+        setSharedPreferences(new User(getSharedPreferences().getUserName(),getSharedPreferences().getEmail(),getSharedPreferences().getFullName(),getSharedPreferences().getPhoneNumber(),getSharedPreferences().getRow_id(),homeLoc,getSharedPreferences().getWorkLocation()));
     }
-
-    public void addNewUserToFireBase(User user)
+    public void updateWorkLocation(String workLoc)
     {
-        fireBase.register(user.getEmail(), user.getPhoneNumber());
+        //databaseHelper.updateWorkLocation(getSharedPreferences().getRow_id(),workLoc);
+        setSharedPreferences(new User(getSharedPreferences().getUserName(),getSharedPreferences().getEmail(),getSharedPreferences().getFullName(),getSharedPreferences().getPhoneNumber(),getSharedPreferences().getRow_id(),getSharedPreferences().getHomeLocation(),workLoc));
     }
-    public User getUserFromSQLite() {
-        Cursor cursor = databaseHelper.readAllData();
-
-        int n = cursor.getCount();
-        cursor.moveToFirst();
-
-        String username = null;
-        String email = null;
-        String fullname = null;
-        String phonenumber = null;
-
-        for (int i = 0; i < n; i++) {
-            username = cursor.getString(1);
-            email = cursor.getString(2);
-            fullname = cursor.getString(3);
-            phonenumber = cursor.getString(4);
-            cursor.moveToNext();
-        }
-        setSharedPreferences();
-        return new User(username, email, fullname, phonenumber);
-    }
-
-
-
-    public boolean LogIn(String emailLogIn, String phoneLogIn)
-    {
+    public boolean LogIn(String emailLogIn, String phoneLogIn) {
         fireBase.LogIn(emailLogIn,phoneLogIn);
-
         Cursor cursor = databaseHelper.readAllData();
 
         int n = cursor.getCount();
         cursor.moveToFirst();
 
+        String row_id = null;
         String username = null;
         String email = null;
         String fullname = null;
         String phonenumber = null;
+        String homeLocation = null;
+        String workLocation = null;
+
         boolean same = false;
 
         for (int i = 0; i < n; i++) {
@@ -115,8 +120,12 @@ public class Repository {
             phonenumber = cursor.getString(4);
 
             if (email.equals(emailLogIn) && phonenumber.equals(phoneLogIn)) {
+                row_id = cursor.getString(0);
                 username = cursor.getString(1);
                 fullname = cursor.getString(3);
+                homeLocation = cursor.getString(5);
+                workLocation = cursor.getString(6);
+
                 same = true;
                 break;
             }
@@ -125,30 +134,23 @@ public class Repository {
         }
 
         if (!same) {
-            isLoggedIn = false;
             return false;
         }
         else
         {
-            userNameLogin = username;
-            emailLogin = email;
-            fullNameLogin = fullname;
-            phoneNumberLogin = phonenumber;
-            isLoggedIn = true;
-            setSharedPreferences();
+            setIsLoggedIn(true);
+            setSharedPreferences(new User(username,email,fullname,phonenumber,row_id,homeLocation,workLocation));
         }
         return true;
 
     }
-    public User getLogIn(){
-        return new User(userNameLogin, emailLogin, fullNameLogin, phoneNumberLogin);
-    }
 
-    public void LogOut()
-    {
+    public void LogOut() {
         fireBase.LogOut();
-        databaseHelper.deleteAllData();
-        setIsRegistered(false);
-        setIsLoggedIn(false);
+
+        sharedPreferences = context.getSharedPreferences("sharedPreferences",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
     }
 }

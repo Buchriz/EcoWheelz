@@ -24,6 +24,7 @@ public class AboutUs extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AboutUs.this, SettingActivity.class);
+                btn.setClickable(false);
                 startActivity(intent);
             }
         });

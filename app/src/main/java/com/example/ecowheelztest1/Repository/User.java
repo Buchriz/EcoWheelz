@@ -2,13 +2,17 @@ package com.example.ecowheelztest1.Repository;
 
 public class User {
 
-    private static String userName, email, fullName, phoneNumber;
+    private String userName, email, fullName, phoneNumber, row_id, homeLocation, workLocation;
 
-    public User(String userName, String email, String fullName, String phoneNumber) {
+
+    public User(String userName, String email, String fullName, String phoneNumber, String rowid, String homeloc, String workloc) {
         this.userName = userName;
         this.email = email;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
+        this.row_id = rowid;
+        this.homeLocation = homeloc;
+        this.workLocation = workloc;
     }
 
     public String getUserName() {
@@ -16,7 +20,7 @@ public class User {
     }
 
     public void setUserName(String userName) {
-        User.userName = userName;
+        this.userName = userName;
     }
 
     public String getEmail() {
@@ -24,7 +28,7 @@ public class User {
     }
 
     public void setEmail(String email) {
-        User.email = email;
+        this.email = email;
     }
 
     public String getFullName() {
@@ -32,7 +36,7 @@ public class User {
     }
 
     public void setFullName(String fullName) {
-        User.fullName = fullName;
+        this.fullName = fullName;
     }
 
     public String getPhoneNumber() {
@@ -40,6 +44,30 @@ public class User {
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        User.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getRow_id() {
+        return row_id;
+    }
+
+    public void setRow_id(String row_id) {
+        this.row_id = row_id;
+    }
+
+    public String getHomeLocation() {
+        return homeLocation;
+    }
+
+    public void setHomeLocation(String homeLocation) {
+        this.homeLocation = homeLocation;
+    }
+
+    public String getWorkLocation() {
+        return workLocation;
+    }
+
+    public void setWorkLocation(String workLocation) {
+        this.workLocation = workLocation;
     }
 }

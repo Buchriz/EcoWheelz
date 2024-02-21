@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/round_dialog"
+    android:layoutDirection="ltr"
+    >
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@drawable/round_background_settings">
+
+        <ImageView
+            android:id="@+id/closeUpdate"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:src="@drawable/contact_us_close_icon"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/btn_backround"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:text="Update Personal Details"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/closeUpdate"
+            />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+
+        <EditText
+            android:id="@+id/userNameUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginRight="30dp"
+            android:gravity="start"
+            android:hint="Username"
+            android:inputType="text"
+            android:maxLength="15"
+            android:textColor="@color/white"
+            android:textColorHint="#d3d8e3"
+            android:textCursorDrawable="@null" />
+
+        <EditText
+            android:id="@+id/emailUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="120dp"
+            android:layout_marginRight="30dp"
+            android:gravity="start"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/white"
+            android:textColorHint="#d3d8e3"
+            android:textCursorDrawable="@null" />
+
+
+        <EditText
+            android:id="@+id/fullNameUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="190dp"
+            android:layout_marginRight="30dp"
+            android:gravity="start"
+            android:hint="Full Name"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="#d3d8e3"
+            android:textCursorDrawable="@null" />
+
+        <EditText
+            android:id="@+id/phoneUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="260dp"
+            android:layout_marginRight="30dp"
+            android:gravity="start"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:textColor="@color/white"
+            android:textColorHint="#d3d8e3"
+            android:textCursorDrawable="@null" />
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/phoneUpdate"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/btn_backround"
+            android:text="עדכן"
+            android:textColor="@color/white"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+</LinearLayout>

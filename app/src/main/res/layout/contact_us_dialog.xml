@@ -16,7 +16,7 @@
             android:id="@+id/close"
             android:layout_width="37dp"
             android:layout_height="37dp"
-            android:src="@drawable/close_icon"
+            android:src="@drawable/contact_us_close_icon"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:background="@drawable/btn_backround"

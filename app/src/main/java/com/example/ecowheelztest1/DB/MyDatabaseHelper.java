@@ -14,15 +14,16 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
     private Context context;
     private static final String DATABASE_NAME = "ecowheelz.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
-    private static final String TABLE_NAME = "my_table";
-    private static final String COLUMN_ID = "_id";
-    private static final String COLUMN_USERNAME = "_username";
-    private static final String COLUMN_EMAIL = "_email";
-    private static final String COLUMN_FULLNAME = "_fullname";
-
-    private static final String COLUMN_PHONENUMBER = "_phonenumber";
+    private static final String TABLE_NAME = "user_table";
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_USERNAME = "username";
+    private static final String COLUMN_EMAIL = "email";
+    private static final String COLUMN_FULLNAME = "fullname";
+    private static final String COLUMN_PHONENUMBER = "phonenumber";
+    private static final String COLUMN_HOMELOCATION = "home_location";
+    private static final String COLUMN_WORKLOCATION = "work_location";
 
     public MyDatabaseHelper(@Nullable Context context)
     {
@@ -37,7 +38,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
                 COLUMN_USERNAME + " TEXT, " +
                 COLUMN_EMAIL + " TEXT, " +
                 COLUMN_FULLNAME + " TEXT, " +
-                COLUMN_PHONENUMBER + " TEXT);";
+                COLUMN_PHONENUMBER + " TEXT, " +
+                COLUMN_HOMELOCATION + " TEXT, " +
+                COLUMN_WORKLOCATION + " TEXT" +
+                ");";
 
         db.execSQL(query);
     }
@@ -48,7 +52,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addUser(String username, String email, String fullname, String phonenumber) {
+    public boolean addUser(String username, String email, String fullname, String phonenumber) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
@@ -61,14 +65,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 
         if (result == -1) {
             Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+            return false;
         } else {
             Toast.makeText(context, "Added Successfully!", Toast.LENGTH_SHORT).show();
+            return true;
         }
     }
 
     public Cursor readAllData() {
         String query = "SELECT " + COLUMN_ID + ", " + COLUMN_USERNAME + ", " + COLUMN_EMAIL + ", " +
-                COLUMN_FULLNAME + ", " + COLUMN_PHONENUMBER + " FROM " + TABLE_NAME;
+                COLUMN_FULLNAME + ", " + COLUMN_PHONENUMBER + ", " +
+                COLUMN_HOMELOCATION + ", " + COLUMN_WORKLOCATION + " FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = null;
@@ -86,6 +93,38 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         cv.put(COLUMN_EMAIL, email);
         cv.put(COLUMN_FULLNAME, fullname);
         cv.put(COLUMN_PHONENUMBER, phonenumber);
+
+        long result = db.update(TABLE_NAME, cv, COLUMN_ID + "=?", new String[]{row_id});
+
+        if (result == -1) {
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Updated Successfully!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void updateHomeLocation(String row_id, String homeLoc)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_HOMELOCATION,homeLoc);
+
+        long result = db.update(TABLE_NAME, cv, COLUMN_ID + "=?", new String[]{row_id});
+
+        if (result == -1) {
+            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Updated Successfully!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void updateWorkLocation(String row_id, String workLoc)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(COLUMN_HOMELOCATION,workLoc);
 
         long result = db.update(TABLE_NAME, cv, COLUMN_ID + "=?", new String[]{row_id});
 

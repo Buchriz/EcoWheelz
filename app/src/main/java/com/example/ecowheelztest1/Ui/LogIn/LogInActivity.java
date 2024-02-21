@@ -11,7 +11,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ecowheelztest1.R;
-import com.example.ecowheelztest1.Ui.Maps.MapsActivity;
 import com.example.ecowheelztest1.Ui.Profile.ProfileActivity;
 
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
@@ -41,6 +40,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
         if (btnBackL == v)
         {
             Intent intent = new Intent(LogInActivity.this, ProfileActivity.class);
+            btnBackL.setClickable(false);
             startActivity(intent);
         }
         if (btnLogIn == v)
@@ -51,7 +51,8 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             logInModule = new LogInModule(this, emailLogIn,phoneLogIn);
             boolean isExist = logInModule.LogIn();
             if (isExist){
-                Intent intent = new Intent(LogInActivity.this, MapsActivity.class);
+                Intent intent = new Intent(LogInActivity.this, ProfileActivity.class);
+                btnLogIn.setClickable(false);
                 startActivity(intent);
             }else {
                 Toast.makeText(this, "משתמש לא נמצא", Toast.LENGTH_SHORT).show();

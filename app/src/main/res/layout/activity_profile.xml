@@ -73,7 +73,7 @@
         android:layout_height="90dp"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         >
 
         <Button
@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="רשום כבר? התחבר כאן"
-            android:textSize="17dp"
+            android:textSize="20dp"
             android:textStyle="bold"
             android:textColor="@color/white"
             android:layout_marginTop="10dp"

@@ -2,9 +2,7 @@ package com.example.ecowheelztest1.Ui.Maps;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -13,7 +11,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -59,7 +56,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ActivityMapsBinding binding;
     private Button menu, currentLoc, startDrive, closeStartDrive, backToDestination;
     private SearchView searchView;
-    private boolean buttonsAdded = false;
+    private boolean buttonsAdded = false, isLoggedIn;
     private RelativeLayout parentLayout, driveButtonsRelativeLayout;
     private LatLng destinationLatLng;
 
@@ -79,12 +76,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setContentView(binding.getRoot());
 
         if (!isGPSEnabled()) {
-            // If not enabled, show a dialog to enable GPS
-            showGPSDisabledAlert();
-        } else {
-            // If GPS is enabled, initialize the map
-            initializeMap();
+            Intent intent = new Intent(MapsActivity.this, EnableGPSActivity.class);
+            startActivity(intent);
         }
+        else {
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            mapFragment.getMapAsync(MapsActivity.this);
+        }
+
+
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
@@ -92,18 +92,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             activityResultLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION);
         }
 
-//        boolean[] isGPSEnabled = EnableGPS();
-//        if (isGPSEnabled[0])
-//        {
-//            Toast.makeText(MapsActivity.this, "יש GPS", Toast.LENGTH_SHORT).show();
-//        }
-//        else
-//        {
-//            Toast.makeText(MapsActivity.this, "אין GPS", Toast.LENGTH_SHORT).show();
-//        }
-
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mapsModule = new MapsModule(this);
 
         parentLayout = findViewById(R.id.layout);
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -124,6 +115,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         searchView.setQueryHint("לאן נוסעים?");
         SearchViewCommit(searchView);
 
+
     }
 
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), new ActivityResultCallback<Boolean>() {
@@ -137,78 +129,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     });
 
 
-//    public boolean[] EnableGPS()
-//    {
-//        boolean[] b = {false};
-//        LocationRequest locationRequest = LocationRequest.create();
-//        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-//        locationRequest.setInterval(10000);
-//        locationRequest.setFastestInterval(10000/2);
-//
-//        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-//        builder.addLocationRequest(locationRequest);
-//        builder.setAlwaysShow(true);
-//
-//        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
-//        Task<LocationSettingsResponse> task = settingsClient.checkLocationSettings(builder.build());
-//        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
-//            @Override
-//            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-//
-//                b[0] = true;
-//            }
-//        });
-//        task.addOnFailureListener(this, new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                b[0] = false;
-//            }
-//        });
-//        return b;
-//    }
-
-
-    private void initializeMap() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(MapsActivity.this);
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-
-        if (isGPSEnabled())
-            initializeMap();
-    }
     private boolean isGPSEnabled() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         return locationManager != null && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
-
-    private void showGPSDisabledAlert() {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setMessage("אנא הפעל שירותי מיקום")
-                .setCancelable(false)
-                .setPositiveButton("הפעל מיקום", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Open GPS settings
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(intent);
-                    }
-                })
-                .setNegativeButton("לא תודה", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                        // You can handle the cancel action here (e.g., display a message or close the app)
-                        Toast.makeText(MapsActivity.this, "האפליקציה חייבת שירותי מיקום בשביל לפעול", Toast.LENGTH_LONG).show();
-                        finish(); // Close the app if GPS is not enabled and the user cancels
-                    }
-                });
-
-        AlertDialog alert = alertDialogBuilder.create();
-        alert.show();
-    }
-
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -237,6 +161,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()),16.7f));
             }
         });
+
+        isLoggedIn = mapsModule.getIsLoggedIn();
+        if (isLoggedIn) {
+            RelativeLayout savedPlacesLayout = mapsModule.Saved_places(map);
+            parentLayout.addView(savedPlacesLayout);
+        }
     }
 
 
@@ -422,7 +352,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.home) {
+        if (id == R.id.close) {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
         else if (id == R.id.profile) {
@@ -446,62 +376,73 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         if (currentLoc == v)
         {
-            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                    && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-            map.setMyLocationEnabled(true);
-            fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    // Got last known location. In some rare situations this can be null.
-                    if (location != null) {
-                        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.7f), 1000, null);
-                    }
+            if (isGPSEnabled()) {
+                if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
                 }
-            });
-
-            if (buttonsAdded)
-            {
-                backToDestination = new Button(MapsActivity.this);
-
-                RelativeLayout.LayoutParams DesParams1 = new RelativeLayout.LayoutParams(150,150);
-                DesParams1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                DesParams1.addRule(RelativeLayout.ALIGN_PARENT_END);
-                DesParams1.setMargins(20,0,0,410);
-                backToDestination.setLayoutParams(DesParams1);
-                backToDestination.setBackground(getDrawable(R.drawable.back_to_destination));
-                parentLayout.addView(backToDestination);
-
-                Animation slideInAnimationForBackToDes = new TranslateAnimation(-1000, 0, 0, 0);
-                slideInAnimationForBackToDes.setDuration(500); // Set the duration of the animation in milliseconds
-                slideInAnimationForBackToDes.setFillAfter(true);
-
-                // Apply animation to the buttons
-                backToDestination.startAnimation(slideInAnimationForBackToDes);
-
-                backToDestination.setOnClickListener(new View.OnClickListener() {
+                map.setMyLocationEnabled(true);
+                fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
-                    public void onClick(View view) {
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
-
-                        Animation slideOutAnimationForBackToDes = new TranslateAnimation(0, -300, 0, 0);
-                        slideOutAnimationForBackToDes.setDuration(500); // Set the duration of the animation in milliseconds
-                        slideOutAnimationForBackToDes.setFillAfter(true);
-
-                        // Apply animation to the buttons
-                        backToDestination.startAnimation(slideOutAnimationForBackToDes);
-
-                        parentLayout.removeView(backToDestination);
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.7f), 1000, null);
+                        }
                     }
                 });
+
+                if (buttonsAdded) {
+                    backToDestination = new Button(MapsActivity.this);
+
+                    RelativeLayout.LayoutParams DesParams1 = new RelativeLayout.LayoutParams(150, 150);
+                    DesParams1.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                    DesParams1.addRule(RelativeLayout.ALIGN_PARENT_END);
+                    DesParams1.setMargins(20, 0, 0, 410);
+                    backToDestination.setLayoutParams(DesParams1);
+                    backToDestination.setBackground(getDrawable(R.drawable.back_to_destination));
+                    parentLayout.addView(backToDestination);
+
+                    Animation slideInAnimationForBackToDes = new TranslateAnimation(-1000, 0, 0, 0);
+                    slideInAnimationForBackToDes.setDuration(500); // Set the duration of the animation in milliseconds
+                    slideInAnimationForBackToDes.setFillAfter(true);
+
+                    // Apply animation to the buttons
+                    backToDestination.startAnimation(slideInAnimationForBackToDes);
+
+                    backToDestination.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
+
+                            Animation slideOutAnimationForBackToDes = new TranslateAnimation(0, -300, 0, 0);
+                            slideOutAnimationForBackToDes.setDuration(500); // Set the duration of the animation in milliseconds
+                            slideOutAnimationForBackToDes.setFillAfter(true);
+
+                            // Apply animation to the buttons
+                            backToDestination.startAnimation(slideOutAnimationForBackToDes);
+
+                            parentLayout.removeView(backToDestination);
+                        }
+                    });
+                }
+            }
+            else {
+                Intent intent = new Intent(MapsActivity.this, EnableGPSActivity.class);
+                startActivity(intent);
             }
         }
         
         if (startDrive == v)
         {
-            Toast.makeText(this, "פה צריך להתחיל מסלול למיקום החדש", Toast.LENGTH_SHORT).show();
+            if (isGPSEnabled()) {
+                Toast.makeText(this, "פה צריך להתחיל מסלול למיקום החדש", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Intent intent = new Intent(MapsActivity.this, EnableGPSActivity.class);
+                startActivity(intent);
+            }
         }
     }
 }

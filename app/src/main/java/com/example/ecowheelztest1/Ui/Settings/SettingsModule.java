@@ -3,27 +3,41 @@ package com.example.ecowheelztest1.Ui.Settings;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
+import android.location.Geocoder;
+import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.ecowheelztest1.R;
 import com.example.ecowheelztest1.Repository.Repository;
+
+import java.io.IOException;
+import java.util.List;
 
 public class SettingsModule {
 
     private Repository repository;
     private Context context;
 
+
     public SettingsModule(Context context) {
         repository = new Repository(context);
         this.context = context;
     }
 
+    public boolean getIsLoggedIn()
+    {
+        return repository.getIsLoggedIn();
+    }
     public void CreateContactUsDialog() {
         Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
@@ -47,8 +61,8 @@ public class SettingsModule {
         dialog.show();
     }
 
-    public void CreateLogOutDialog(LinearLayout logOutLayout) {
-        if (repository.getIsRegistered() || repository.getIsLoggedIn()) {
+    public void CreateLogOutDialog() {
+        if (repository.getIsLoggedIn()) {
             Dialog dialog = new Dialog(context);
             dialog.setCancelable(false);
             dialog.setContentView(R.layout.log_out_dialog);
@@ -83,4 +97,119 @@ public class SettingsModule {
         }
 
     }
+
+    public LinearLayout ChangeHomeLocationNewLayout(LinearLayout parent, RelativeLayout midParent)
+    {
+        parent.removeView(midParent);
+        LinearLayout linearLayout = new LinearLayout(context);
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(-1,-1));
+
+        EditText etUpdate = new EditText(context);
+        etUpdate.setLayoutParams(new LinearLayout.LayoutParams(-1,-1,2));
+        etUpdate.setHint("Change Location");
+        etUpdate.setHintTextColor(Color.WHITE);
+        etUpdate.setTextColor(Color.WHITE);
+
+        Button btnUpdate = new Button(context);
+        btnUpdate.setLayoutParams(new LinearLayout.LayoutParams(-2,-2,1));
+        btnUpdate.setText("עדכן");
+        btnUpdate.setTextColor(Color.WHITE);
+        btnUpdate.setGravity(Gravity.CENTER);
+        btnUpdate.setTextSize(17);
+        btnUpdate.setTypeface(null, Typeface.BOLD);
+        btnUpdate.setBackground(context.getDrawable(R.drawable.btn_backround));
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                parent.removeView(linearLayout);
+                parent.addView(midParent);
+
+                String strH = etUpdate.getText().toString().trim();
+
+                if (checkIsTrueLocation(strH)){
+                    if (!strH.equals(repository.getSharedPreferences().getWorkLocation()))
+                        repository.updateHomeLocation(strH);
+                    else
+                        Toast.makeText(context, "בית ועבודה אינם יכולים להיות לאותו מיקום", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        linearLayout.addView(etUpdate);
+        linearLayout.addView(btnUpdate);
+
+        return linearLayout;
+    }
+    public LinearLayout ChangeWorkLocationNewLayout(LinearLayout parent, RelativeLayout midParent)
+    {
+        parent.removeView(midParent);
+        LinearLayout linearLayout = new LinearLayout(context);
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(-1,-1));
+
+        EditText etUpdate = new EditText(context);
+        etUpdate.setLayoutParams(new LinearLayout.LayoutParams(-1,-1,2));
+        etUpdate.setHint("Change Location");
+        etUpdate.setHintTextColor(Color.WHITE);
+        etUpdate.setTextColor(Color.WHITE);
+
+        Button btnUpdate = new Button(context);
+        btnUpdate.setLayoutParams(new LinearLayout.LayoutParams(-2,-2,1));
+        btnUpdate.setText("עדכן");
+        btnUpdate.setTextColor(Color.WHITE);
+        btnUpdate.setGravity(Gravity.CENTER);
+        btnUpdate.setTextSize(17);
+        btnUpdate.setTypeface(null, Typeface.BOLD);
+        btnUpdate.setBackground(context.getDrawable(R.drawable.btn_backround));
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                parent.removeView(linearLayout);
+                parent.addView(midParent);
+
+                String strW = etUpdate.getText().toString().trim();
+
+                if (checkIsTrueLocation(strW)){
+                    if (!strW.equals(repository.getSharedPreferences().getHomeLocation()))
+                        repository.updateWorkLocation(strW);
+                    else
+                        Toast.makeText(context, "בית ועבודה אינם יכולים להיות לאותו מיקום", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        linearLayout.addView(etUpdate);
+        linearLayout.addView(btnUpdate);
+
+        return linearLayout;
+    }
+
+
+    private boolean checkIsTrueLocation(String str) {
+        if (str.length() == 0){
+            Toast.makeText(context, "לא הוכנס מיקום", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Address address = null;
+            Geocoder geocoder = new Geocoder(context);
+
+            try {
+                List<Address> addresses = geocoder.getFromLocationName(str, 1);
+                if (addresses != null && !addresses.isEmpty()) {
+                    address = addresses.get(0);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(context, "Error finding location. Please try again.", Toast.LENGTH_SHORT).show();
+            }
+
+            if (address != null) {
+                return true;
+            } else {
+                Toast.makeText(context, "מיקום לא נמצא", Toast.LENGTH_SHORT).show();
+            }
+        }
+        return false;
+    }
+
 }
