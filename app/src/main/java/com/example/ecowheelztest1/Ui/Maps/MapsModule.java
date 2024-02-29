@@ -46,7 +46,7 @@ public class MapsModule {
         RelativeLayout.LayoutParams RlayoutParams = new RelativeLayout.LayoutParams(640,100);
         RlayoutParams.addRule(RelativeLayout.BELOW, R.id.searchView); // Set the linear layout below the search view
         RlayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        RlayoutParams.setMargins(68,0,0,0);
+        RlayoutParams.setMargins(65,-1,0,0);
         relativeLayout.setLayoutParams(RlayoutParams);
         relativeLayout.setBackgroundColor(Color.WHITE);
 

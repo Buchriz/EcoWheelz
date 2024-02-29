@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#C84600"
+    android:background="@color/primary"
     android:layoutDirection="ltr"
     tools:context=".Ui.AboutUs.AboutUs">
 
@@ -34,19 +34,17 @@
     </RelativeLayout>
 
 
-
     <TextView
         android:layout_width="350dp"
         android:layout_height="300dp"
-        android:background="#aaa"
-        android:layout_gravity="center"
-        android:gravity="center"
         android:layout_centerInParent="true"
+        android:layout_gravity="center"
+        android:background="@drawable/round_background_settings"
+        android:gravity="center"
         android:text="מיזם טלוויזיה חדשני התפור בדיוק למידות שלך.
 צפייה בתכנים במחשב ללקוחות המנויים לשירות נתמכת רק בדפדפן Chrome.
 ההצטרפות הינה ללא התחייבות ובכפוף לתנאי השימוש בשירות. ההצטרפות הינה באמצעות כרטיס אשראי בלבד (לא כרטיס חיוב). רשימת התכנים מתעדכנת מעת לעת לפי שיקול דעתה של HOT."
-        android:textSize="17dp"
-        android:textColor="@color/purple_700"
-        />
+        android:textColor="@color/white"
+        android:textSize="17dp" />
 
 </RelativeLayout>

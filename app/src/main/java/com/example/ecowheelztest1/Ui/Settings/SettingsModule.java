@@ -1,7 +1,9 @@
 package com.example.ecowheelztest1.Ui.Settings;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -184,6 +186,39 @@ public class SettingsModule {
         return linearLayout;
     }
 
+
+    /////////////////////////////////////////////////////////////////////////////
+    //              לנסות לשים דיאלוג לפני שינוי מיקומים
+    ////////////////////////////////////////////////////////////////////////////
+    public boolean HomeAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        String title = "מיקום ביתך הוא: " + repository.getSharedPreferences().getHomeLocation();
+        builder.setTitle(title);
+        builder.setMessage("האם בטוח לשנות מיקום זה?");
+        builder.setCancelable(false);
+
+        final boolean[] flag = {false};
+
+        builder.setPositiveButton("כן", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                flag[0] = true;
+            }
+        });
+
+        builder.setNegativeButton("לא", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                flag[0] = false;
+            }
+        });
+
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        dialog.getButton(-1).setTextColor(Color.GREEN);
+        dialog.getButton(-2).setTextColor(Color.RED);
+
+        return flag[0];
+    }
 
     private boolean checkIsTrueLocation(String str) {
         if (str.length() == 0){
