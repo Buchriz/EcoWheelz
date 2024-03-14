@@ -123,7 +123,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void onActivityResult(Boolean b) {
             if (b)
             {
-                Toast.makeText(MapsActivity.this, "Permission granted! Restart This app", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivity.this, "Permission granted!", Toast.LENGTH_SHORT).show();
             }
         }
     });

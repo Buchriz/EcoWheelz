@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 
-import com.example.ecowheelztest1.DB.FireBase;
 import com.example.ecowheelztest1.DB.MyDatabaseHelper;
 
 public class Repository {
 
-    private final FireBase fireBase;
     private final MyDatabaseHelper databaseHelper;
     private final Context context;
 
@@ -54,7 +52,6 @@ public class Repository {
     }
 
     public Repository(Context context) {
-        fireBase = new FireBase();
         databaseHelper = new MyDatabaseHelper(context);
         this.context = context;
         sharedPreferences = context.getSharedPreferences("sharedPreferences",Context.MODE_PRIVATE);
@@ -62,11 +59,7 @@ public class Repository {
     }
 
     public boolean addUser(String userName, String email, String fullName, String phoneNumber) {
-
-        boolean isAdded = addNewUserToSQLite(userName,email,fullName,phoneNumber);
-        if (isAdded)
-            addNewUserToFireBase(email,phoneNumber);
-        return isAdded;
+        return addNewUserToSQLite(userName,email,fullName,phoneNumber);
     }
     public boolean getIsLoggedIn() {
         return sharedPreferences.getBoolean("isLoggedIn",false);
@@ -79,9 +72,7 @@ public class Repository {
         return databaseHelper.addUser(userName,email,fullName,phoneNumber);
     }
 
-    public void addNewUserToFireBase(String email, String phoneNumber) {
-        fireBase.register(email,phoneNumber);
-    }
+
 
     public void updateData(String row_id, String username, String email, String fullname, String phonenumber) {
         databaseHelper.updateData(row_id,username,email,fullname,phonenumber);
@@ -99,7 +90,6 @@ public class Repository {
         setSharedPreferences(new User(getSharedPreferences().getUserName(),getSharedPreferences().getEmail(),getSharedPreferences().getFullName(),getSharedPreferences().getPhoneNumber(),getSharedPreferences().getRow_id(),getSharedPreferences().getHomeLocation(),workLoc));
     }
     public boolean LogIn(String emailLogIn, String phoneLogIn) {
-        fireBase.LogIn(emailLogIn,phoneLogIn);
         Cursor cursor = databaseHelper.readAllData();
 
         int n = cursor.getCount();
@@ -142,12 +132,9 @@ public class Repository {
             setSharedPreferences(new User(username,email,fullname,phonenumber,row_id,homeLocation,workLocation));
         }
         return true;
-
     }
 
     public void LogOut() {
-        fireBase.LogOut();
-
         sharedPreferences = context.getSharedPreferences("sharedPreferences",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
