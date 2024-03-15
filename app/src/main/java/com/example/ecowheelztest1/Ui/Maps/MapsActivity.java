@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -56,6 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ActivityMapsBinding binding;
     private Button menu, currentLoc, startDrive, closeStartDrive, backToDestination;
     private SearchView searchView;
+    private TextView tvHome, tvWork;
     private boolean buttonsAdded = false, isLoggedIn;
     private RelativeLayout parentLayout, driveButtonsRelativeLayout;
     private LatLng destinationLatLng;
@@ -164,8 +167,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         isLoggedIn = mapsModule.getIsLoggedIn();
         if (isLoggedIn) {
-            RelativeLayout savedPlacesLayout = mapsModule.Saved_places(map);
+            RelativeLayout savedPlacesLayout = Saved_places(map);
             parentLayout.addView(savedPlacesLayout);
+//            tvHome.setOnClickListener(this);
+//            tvWork.setOnClickListener(this);
         }
     }
 
@@ -216,7 +221,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
     @SuppressLint("UseCompatLoadingForDrawables")
-    private void addStartDriveButtons(String query) {
+    public void addStartDriveButtons(String query) {
 
         /////////////////////////////////////
         //     רקע שמכיל את הכפתורים
@@ -321,9 +326,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void closeStartDriveButtons(RelativeLayout linearLayout) {
+    public void closeStartDriveButtons(RelativeLayout relativeLayout) {
         // Remove buttons from the parentLayout
-        parentLayout.removeView(linearLayout);
+        tvHome.setClickable(true);
+        tvWork.setClickable(true);
+        parentLayout.removeView(relativeLayout);
         parentLayout.removeView(backToDestination);
         searchView.setQuery("",false);
         map.clear();
@@ -345,6 +352,116 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Apply animation to the buttons
         currentLoc.startAnimation(slideOutAnimationForCurrentLoc);
+    }
+
+    public RelativeLayout Saved_places(GoogleMap map){
+        RelativeLayout relativeLayout = new RelativeLayout(this);
+
+        RelativeLayout.LayoutParams RlayoutParams = new RelativeLayout.LayoutParams(640,100);
+        RlayoutParams.addRule(RelativeLayout.BELOW, R.id.searchView); // Set the linear layout below the search view
+        RlayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        RlayoutParams.setMargins(65,-1,0,0);
+        relativeLayout.setLayoutParams(RlayoutParams);
+        relativeLayout.setBackgroundColor(Color.WHITE);
+
+
+        tvHome = new TextView(this);
+        RelativeLayout.LayoutParams tvHParams = new RelativeLayout.LayoutParams(320,-1);
+        tvHParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        tvHome.setLayoutParams(tvHParams);
+        tvHome.setGravity(Gravity.CENTER);
+        tvHome.setText("בית");
+        tvHome.setTextSize(16);
+        tvHome.setTypeface(null, Typeface.BOLD);
+
+        tvHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String str = mapsModule.getHomeLocation();
+                if (str == null){
+                    Intent intent = new Intent(MapsActivity.this, SettingActivity.class);
+                    tvHome.setClickable(false);
+                    startActivity(intent);
+                    Toast.makeText(MapsActivity.this, "הכנס מיקום בית", Toast.LENGTH_SHORT).show();
+                }
+                else {
+//                    Toast.makeText(context,repository.getSharedPreferences().getHomeLocation(), Toast.LENGTH_SHORT).show();
+//                    map.addMarker(new MarkerOptions().position(homeLatLng));
+//                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(homeLatLng, 16.7f), 1000, null);
+
+                    map.clear();
+                    destinationLatLng = new LatLng(mapsModule.getLocation(str).getLatitude(), mapsModule.getLocation(str).getLongitude());
+                    map.addMarker(new MarkerOptions().position(destinationLatLng));
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
+
+                    if (!buttonsAdded) {
+                        addStartDriveButtons(str);
+                        buttonsAdded = true;
+                        tvHome.setClickable(false);
+                    }
+                }
+            }
+        });
+
+        tvWork = new TextView(this);
+        RelativeLayout.LayoutParams tvWParams = new RelativeLayout.LayoutParams(320,-1);
+        tvWParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        tvWork.setLayoutParams(tvWParams);
+        tvWork.setGravity(Gravity.CENTER);
+        tvWork.setText("עבודה");
+        tvWork.setTextSize(16);
+        tvWork.setTypeface(null, Typeface.BOLD);
+
+        tvWork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String str = mapsModule.getWorkLocation();
+                if (str == null){
+                    Intent intent = new Intent(MapsActivity.this, SettingActivity.class);
+                    tvWork.setClickable(false);
+                    startActivity(intent);
+                    Toast.makeText(MapsActivity.this, "הכנס מיקום עבודה", Toast.LENGTH_SHORT).show();
+                }
+                else {
+//                    Toast.makeText(context, repository.getSharedPreferences().getWorkLocation(), Toast.LENGTH_SHORT).show();
+//                    map.addMarker(new MarkerOptions().position(workLatLng));
+//                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(workLatLng, 16.7f), 1000, null);
+
+                    map.clear();
+                    destinationLatLng = new LatLng(mapsModule.getLocation(str).getLatitude(), mapsModule.getLocation(str).getLongitude());
+                    map.addMarker(new MarkerOptions().position(destinationLatLng));
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
+
+                    if (!buttonsAdded) {
+                        addStartDriveButtons(str);
+                        buttonsAdded = true;
+                        tvWork.setClickable(false);
+                    }
+                }
+            }
+        });
+
+
+        NightModeSwitch nightModeSwitch = new NightModeSwitch();
+        if (nightModeSwitch.GetNightModSwitch())
+        {
+            relativeLayout.setBackground(getDrawable(R.drawable.home_work_background_dark_mode));
+            tvHome.setTextColor(Color.WHITE);
+            tvWork.setTextColor(Color.WHITE);
+        }
+        else
+        {
+            relativeLayout.setBackground(getDrawable(R.drawable.home_work_background));
+            tvHome.setTextColor(Color.BLACK);
+            tvWork.setTextColor(Color.BLACK);
+        }
+
+        relativeLayout.addView(tvHome);
+        relativeLayout.addView(tvWork);
+
+        return relativeLayout;
     }
 
 
@@ -444,5 +561,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(intent);
             }
         }
+
+        if (tvHome == v && isLoggedIn)
+        {
+            String str = mapsModule.getHomeLocation();
+            if (str == null){
+                Intent intent = new Intent(MapsActivity.this, SettingActivity.class);
+                tvHome.setClickable(false);
+                startActivity(intent);
+                Toast.makeText(MapsActivity.this, "הכנס מיקום בית", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                //Toast.makeText(context,repository.getSharedPreferences().getHomeLocation(), Toast.LENGTH_SHORT).show();
+                LatLng homeLatLng = new LatLng(mapsModule.getLocation(str).getLatitude(), mapsModule.getLocation(str).getLongitude());
+                map.addMarker(new MarkerOptions().position(homeLatLng));
+                map.animateCamera(CameraUpdateFactory.newLatLngZoom(homeLatLng, 16.7f), 1000, null);
+                MapsActivity mapsActivity = new MapsActivity();
+                mapsActivity.addStartDriveButtons(str);
+            }
+        }
+
     }
 }
