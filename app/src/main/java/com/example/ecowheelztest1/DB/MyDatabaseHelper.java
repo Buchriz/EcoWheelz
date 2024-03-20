@@ -124,7 +124,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(COLUMN_HOMELOCATION,workLoc);
+        cv.put(COLUMN_WORKLOCATION,workLoc);
 
         long result = db.update(TABLE_NAME, cv, COLUMN_ID + "=?", new String[]{row_id});
 

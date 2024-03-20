@@ -61,7 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextView tvHome, tvWork;
     private boolean buttonsAdded = false, isLoggedIn;
     private RelativeLayout parentLayout, driveButtonsRelativeLayout;
-    private LatLng destinationLatLng;
+    private LatLng currentLatLng, destinationLatLng;
 
     private DrawerLayout drawerLayout;
     private NavigationView navView;
@@ -98,14 +98,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mapsModule = new MapsModule(this);
+        nightModeSwitch = new NightModeSwitch();
 
         parentLayout = findViewById(R.id.layout);
         drawerLayout = findViewById(R.id.drawerLayout);
         navView = findViewById(R.id.navDrawer);
         navView.setItemIconTintList(null);
         navView.setNavigationItemSelectedListener(this);
-        nightModeSwitch = new NightModeSwitch();
-
 
         menu = findViewById(R.id.menu);
         menu.setOnClickListener(this);
@@ -141,6 +140,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         map.setMinZoomPreference(3.0f);
+        map.getUiSettings().setMyLocationButtonEnabled(false);
+
 
         if (nightModeSwitch.GetNightModSwitch())
         {
@@ -161,7 +162,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onSuccess(Location location)
             {
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()),16.7f));
+                currentLatLng = new LatLng(location.getLatitude(),location.getLongitude());
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng,16.7f));
             }
         });
 
@@ -169,8 +171,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (isLoggedIn) {
             RelativeLayout savedPlacesLayout = Saved_places(map);
             parentLayout.addView(savedPlacesLayout);
-//            tvHome.setOnClickListener(this);
-//            tvWork.setOnClickListener(this);
         }
     }
 
@@ -288,7 +288,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         closeStartDrive.setBackground(getDrawable(R.drawable.close_start_drive_background));
         closeStartDrive.setText("סגור");
         closeStartDrive.setTextSize(24);
-        closeStartDrive.setTextColor(Color.WHITE);
+        closeStartDrive.setTextColor(Color.BLACK);
 
 
         /////////////////////////////////////
@@ -360,7 +360,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         RelativeLayout.LayoutParams RlayoutParams = new RelativeLayout.LayoutParams(640,100);
         RlayoutParams.addRule(RelativeLayout.BELOW, R.id.searchView); // Set the linear layout below the search view
         RlayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        RlayoutParams.setMargins(65,-1,0,0);
+        RlayoutParams.setMargins(77,-1,0,0);
         relativeLayout.setLayoutParams(RlayoutParams);
         relativeLayout.setBackgroundColor(Color.WHITE);
 
@@ -395,11 +395,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     map.addMarker(new MarkerOptions().position(destinationLatLng));
                     map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
 
-                    if (!buttonsAdded) {
-                        addStartDriveButtons(str);
-                        buttonsAdded = true;
-                        tvHome.setClickable(false);
+                    if (buttonsAdded)
+                    {
+                        closeStartDriveButtons(driveButtonsRelativeLayout);
                     }
+                    addStartDriveButtons(str);
+                    buttonsAdded = true;
+                    tvHome.setClickable(false);
+
                 }
             }
         });
@@ -434,11 +437,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     map.addMarker(new MarkerOptions().position(destinationLatLng));
                     map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
 
-                    if (!buttonsAdded) {
-                        addStartDriveButtons(str);
-                        buttonsAdded = true;
-                        tvWork.setClickable(false);
+                    if (buttonsAdded) {
+                        closeStartDriveButtons(driveButtonsRelativeLayout);
                     }
+                    addStartDriveButtons(str);
+                    buttonsAdded = true;
+                    tvWork.setClickable(false);
                 }
             }
         });
@@ -504,8 +508,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
-                            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16.7f), 1000, null);
+                            map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16.7f), 1000, null);
                         }
                     }
                 });
@@ -562,24 +565,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
 
-        if (tvHome == v && isLoggedIn)
-        {
-            String str = mapsModule.getHomeLocation();
-            if (str == null){
-                Intent intent = new Intent(MapsActivity.this, SettingActivity.class);
-                tvHome.setClickable(false);
-                startActivity(intent);
-                Toast.makeText(MapsActivity.this, "הכנס מיקום בית", Toast.LENGTH_SHORT).show();
-            }
-            else {
-                //Toast.makeText(context,repository.getSharedPreferences().getHomeLocation(), Toast.LENGTH_SHORT).show();
-                LatLng homeLatLng = new LatLng(mapsModule.getLocation(str).getLatitude(), mapsModule.getLocation(str).getLongitude());
-                map.addMarker(new MarkerOptions().position(homeLatLng));
-                map.animateCamera(CameraUpdateFactory.newLatLngZoom(homeLatLng, 16.7f), 1000, null);
-                MapsActivity mapsActivity = new MapsActivity();
-                mapsActivity.addStartDriveButtons(str);
-            }
-        }
 
     }
 }

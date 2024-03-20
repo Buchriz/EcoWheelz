@@ -81,12 +81,12 @@ public class Repository {
 
     public void updateHomeLocation(String homeLoc)
     {
-        //databaseHelper.updateHomeLocation(getSharedPreferences().getRow_id(),homeLoc);
+        databaseHelper.updateHomeLocation(getSharedPreferences().getRow_id(),homeLoc);
         setSharedPreferences(new User(getSharedPreferences().getUserName(),getSharedPreferences().getEmail(),getSharedPreferences().getFullName(),getSharedPreferences().getPhoneNumber(),getSharedPreferences().getRow_id(),homeLoc,getSharedPreferences().getWorkLocation()));
     }
     public void updateWorkLocation(String workLoc)
     {
-        //databaseHelper.updateWorkLocation(getSharedPreferences().getRow_id(),workLoc);
+        databaseHelper.updateWorkLocation(getSharedPreferences().getRow_id(),workLoc);
         setSharedPreferences(new User(getSharedPreferences().getUserName(),getSharedPreferences().getEmail(),getSharedPreferences().getFullName(),getSharedPreferences().getPhoneNumber(),getSharedPreferences().getRow_id(),getSharedPreferences().getHomeLocation(),workLoc));
     }
     public boolean LogIn(String emailLogIn, String phoneLogIn) {
