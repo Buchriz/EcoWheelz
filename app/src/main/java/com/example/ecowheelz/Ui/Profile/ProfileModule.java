@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1.Ui.Profile;
+package com.example.ecowheelz.Ui.Profile;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -19,10 +19,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.ecowheelztest1.R;
-import com.example.ecowheelztest1.Repository.Repository;
-import com.example.ecowheelztest1.Repository.User;
-import com.example.ecowheelztest1.Ui.Maps.MapsActivity;
+import com.example.ecowheelz.R;
+import com.example.ecowheelz.Repository.Repository;
+import com.example.ecowheelz.Repository.User;
+import com.example.ecowheelz.Ui.Maps.MapsActivity;
 
 public class ProfileModule {
 
@@ -43,7 +43,9 @@ public class ProfileModule {
     }
 
 
-
+    ///////////////////////////////////////////////
+    //      New Layout If User Is Logged-In
+    ///////////////////////////////////////////////
     public void NewLayout(LinearLayout pA,LinearLayout regiButtonLayout,TextView tvName,String userName,String fullName, String email, String phoneNumber) {
         /////////////////////////////////////////////////////////////////////////
         //                   השמה של הפרטים האישיים
@@ -65,7 +67,6 @@ public class ProfileModule {
         SpannableString spannableString1 = new SpannableString("Full Name: " + fullName);
         spannableString1.setSpan(new UnderlineSpan(), 0, 9, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvfullname.setText(spannableString1);
-        //tvfullname.setText("Full Name: " + fullName);
 
 
         TextView tvemail = new TextView(context);
@@ -77,7 +78,6 @@ public class ProfileModule {
         SpannableString spannableString2 = new SpannableString("Email: " + email);
         spannableString2.setSpan(new UnderlineSpan(), 0, 5, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvemail.setText(spannableString2);
-        //tvemail.setText("Email: " + email);
 
 
         TextView tvphonenumber = new TextView(context);
@@ -89,7 +89,6 @@ public class ProfileModule {
         SpannableString spannableString3 = new SpannableString("Phone Number: " + phoneNumber);
         spannableString3.setSpan(new UnderlineSpan(), 0, 12, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         tvphonenumber.setText(spannableString3);
-        //tvphonenumber.setText("Phone Number: " + phoneNumber);
 
 
         LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(-1,200);
@@ -134,11 +133,13 @@ public class ProfileModule {
         });
 
         infoRelativeLayout.addView(btnChange);
-
         pA.addView(infoRelativeLayout);
     }
 
 
+    ///////////////////////////////////////////////
+    //           Update User Dialog
+    ///////////////////////////////////////////////
     public void updateDataDialog() {
         Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);

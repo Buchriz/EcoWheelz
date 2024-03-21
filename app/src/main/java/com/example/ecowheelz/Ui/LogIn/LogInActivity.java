@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1.Ui.LogIn;
+package com.example.ecowheelz.Ui.LogIn;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +10,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ecowheelztest1.R;
-import com.example.ecowheelztest1.Ui.Profile.ProfileActivity;
+import com.example.ecowheelz.R;
+import com.example.ecowheelz.Ui.Profile.ProfileActivity;
 
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -50,12 +50,15 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
 
             logInModule = new LogInModule(this, emailLogIn,phoneLogIn);
             boolean isExist = logInModule.LogIn();
+
             if (isExist){
                 Intent intent = new Intent(LogInActivity.this, ProfileActivity.class);
                 btnLogIn.setClickable(false);
                 startActivity(intent);
-            }else {
-                Toast.makeText(this, "משתמש לא נמצא", Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(this, getString(R.string.User_Not_Found), Toast.LENGTH_SHORT).show();
             }
 
         }

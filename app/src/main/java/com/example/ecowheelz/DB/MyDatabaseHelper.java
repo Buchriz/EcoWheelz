@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1.DB;
+package com.example.ecowheelz.DB;
 
 
 import android.content.ContentValues;
@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
+import com.example.ecowheelz.R;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 
@@ -64,10 +66,10 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         long result = db.insert(TABLE_NAME, null, cv);
 
         if (result == -1) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.SQLite_Failed), Toast.LENGTH_SHORT).show();
             return false;
         } else {
-            Toast.makeText(context, "Added Successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.SQLite_AddUser), Toast.LENGTH_SHORT).show();
             return true;
         }
     }
@@ -97,9 +99,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         long result = db.update(TABLE_NAME, cv, COLUMN_ID + "=?", new String[]{row_id});
 
         if (result == -1) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.SQLite_Failed), Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(context, "Updated Successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.SQLite_UpdateUserInfo), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -113,9 +115,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         long result = db.update(TABLE_NAME, cv, COLUMN_ID + "=?", new String[]{row_id});
 
         if (result == -1) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.SQLite_Failed), Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(context, "Updated Successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.SQLite_UpdateUserInfo), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -129,9 +131,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         long result = db.update(TABLE_NAME, cv, COLUMN_ID + "=?", new String[]{row_id});
 
         if (result == -1) {
-            Toast.makeText(context, "Failed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.SQLite_Failed), Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(context, "Updated Successfully!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.SQLite_UpdateUserInfo), Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1.Ui.Settings;
+package com.example.ecowheelz.Ui.Settings;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,8 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.example.ecowheelztest1.R;
-import com.example.ecowheelztest1.Repository.Repository;
+import com.example.ecowheelz.R;
+import com.example.ecowheelz.Repository.Repository;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,6 +40,12 @@ public class SettingsModule {
     {
         return repository.getIsLoggedIn();
     }
+
+
+
+    ////////////////////////////////////////
+    //          Contact-Us Dialog
+    ////////////////////////////////////////
     public void CreateContactUsDialog() {
         Dialog dialog = new Dialog(context);
         dialog.setCancelable(false);
@@ -63,8 +69,13 @@ public class SettingsModule {
         dialog.show();
     }
 
+
+
+    ///////////////////////////////////////////////////////
+    //      Log-Out Dialog If The User Is Logged-In
+    ///////////////////////////////////////////////////////
     public void CreateLogOutDialog() {
-        if (repository.getIsLoggedIn()) {
+        if (getIsLoggedIn()) {
             Dialog dialog = new Dialog(context);
             dialog.setCancelable(false);
             dialog.setContentView(R.layout.log_out_dialog);
@@ -82,7 +93,7 @@ public class SettingsModule {
                 @Override
                 public void onClick(View view) {
                     repository.LogOut();
-                    Toast.makeText(context, "התנתקת בהצלחה", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, context.getString(R.string.Log_Out_Succeeded), Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
             });
@@ -100,6 +111,11 @@ public class SettingsModule {
 
     }
 
+
+
+    //////////////////////////////////////////////////////////
+    //        Change Home/Work Location New Layouts
+    //////////////////////////////////////////////////////////
     public LinearLayout ChangeHomeLocationNewLayout(LinearLayout parent, RelativeLayout midParent)
     {
         parent.removeView(midParent);
@@ -132,7 +148,7 @@ public class SettingsModule {
                     if (!strH.equals(repository.getSharedPreferences().getWorkLocation()))
                         repository.updateHomeLocation(strH);
                     else
-                        Toast.makeText(context, "בית ועבודה אינם יכולים להיות לאותו מיקום", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getString(R.string.Home_And_Work_Cant_Be_The_Same), Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -143,6 +159,7 @@ public class SettingsModule {
 
         return linearLayout;
     }
+
     public LinearLayout ChangeWorkLocationNewLayout(LinearLayout parent, RelativeLayout midParent)
     {
         parent.removeView(midParent);
@@ -175,7 +192,7 @@ public class SettingsModule {
                     if (!strW.equals(repository.getSharedPreferences().getHomeLocation()))
                         repository.updateWorkLocation(strW);
                     else
-                        Toast.makeText(context, "בית ועבודה אינם יכולים להיות לאותו מיקום", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getString(R.string.Home_And_Work_Cant_Be_The_Same), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -187,9 +204,11 @@ public class SettingsModule {
     }
 
 
-    /////////////////////////////////////////////////////////////////////////////
-    //              לנסות לשים דיאלוג לפני שינוי מיקומים
-    ////////////////////////////////////////////////////////////////////////////
+
+
+    ////////////////////////////////////////////////////////
+    //        לנסות לשים דיאלוג לפני שינוי מיקומים
+    /////////////////////////////////////////////////////////
     public boolean HomeAlertDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         String title = "מיקום ביתך הוא: " + repository.getSharedPreferences().getHomeLocation();
@@ -220,9 +239,14 @@ public class SettingsModule {
         return flag[0];
     }
 
+
+
+    ////////////////////////////////////////////////////////////
+    //      Checking If The Location Is A Real Location
+    ////////////////////////////////////////////////////////////
     private boolean checkIsTrueLocation(String str) {
         if (str.length() == 0){
-            Toast.makeText(context, "לא הוכנס מיקום", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getString(R.string.Location_Not_Entered), Toast.LENGTH_SHORT).show();
         }
         else {
             Address address = null;
@@ -235,13 +259,13 @@ public class SettingsModule {
                 }
             } catch (IOException e) {
                 e.printStackTrace();
-                Toast.makeText(context, "Error finding location. Please try again.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.Error_Finding_Location), Toast.LENGTH_SHORT).show();
             }
 
             if (address != null) {
                 return true;
             } else {
-                Toast.makeText(context, "מיקום לא נמצא", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.Location_Not_Found), Toast.LENGTH_SHORT).show();
             }
         }
         return false;

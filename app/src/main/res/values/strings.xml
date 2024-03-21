@@ -1,5 +1,36 @@
 <resources>
-    <string name="app_name">EcoWheelzTest1</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="app_name">EcoWheelz</string>
     <string name="API_Key" templateMergeStrategy="preserve" translatable="false">AIzaSyC_4Pvf3asaPiFGyqdvxAUwX2nRmfPhZ0A</string>
+
+    //////////////////////////////
+    //      SQLite Toasts
+    <string name="SQLite_Failed">Failed</string>
+    <string name="SQLite_AddUser">Added Successfully!</string>
+    <string name="SQLite_UpdateUserInfo">Updated Successfully!</string>
+
+    //////////////////////////////
+    //      Log-In Toast
+    <string name="User_Not_Found">משתמש לא נמצא</string>
+
+    //////////////////////////////
+    //      Maps Toasts
+    <string name="Enable_GPS">הפעל מיקום</string>
+    <string name="Permission_Granted">Permission granted!</string>
+    <string name="Enter_Destination">Enter destination</string>
+    <string name="Error_Finding_Location">Error finding location. Please try again.</string>
+    <string name="Location_Not_Found">Location not found</string>
+    <string name="Enter_Home_Location">הכנס מיקום בית</string>
+    <string name="Enter_Work_Location">הכנס מיקום עבודה</string>
+    <string name="Need_To_Start_Routes">פה צריך להתחיל מסלול למיקום החדש</string>
+
+    //////////////////////////////
+    //      Register Toast
+    <string name="Phone_Already_Exists">מספר טלפון זה כבר קיים, אנא הכנס מספר אחר</string>
+
+    //////////////////////////////
+    //      Settings Toasts
+    <string name="Log_Out_Succeeded">התנתקת בהצלחה</string>
+    <string name="Home_And_Work_Cant_Be_The_Same">בית ועבודה אינם יכולים להיות לאותו מיקום</string>
+    <string name="Location_Not_Entered">לא הוכנס מיקום</string>
+
 </resources>

@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.ecowheelztest1'
+    namespace 'com.example.ecowheelz'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.ecowheelztest1"
+        applicationId "com.example.ecowheelz"
         minSdk 24
         targetSdk 34
         versionCode 1

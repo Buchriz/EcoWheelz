@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1.Ui.Maps;
+package com.example.ecowheelz.Ui.Maps;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ecowheelztest1.R;
+import com.example.ecowheelz.R;
 
 public class EnableGPSActivity extends AppCompatActivity {
 private Button enable_gps_continue;
@@ -29,6 +29,7 @@ private Button enable_gps_continue;
                 startActivity(intent);
             }
         });
+
     }
 
     @Override
@@ -41,7 +42,7 @@ private Button enable_gps_continue;
             startActivity(intent);
         }
         else {
-            Toast.makeText(this, "הפעל מיקום", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.Enable_GPS), Toast.LENGTH_SHORT).show();
         }
     }
 

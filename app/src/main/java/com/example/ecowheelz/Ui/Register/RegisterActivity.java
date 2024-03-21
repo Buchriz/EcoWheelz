@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1.Ui.Register;
+package com.example.ecowheelz.Ui.Register;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,9 +10,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ecowheelztest1.R;
-import com.example.ecowheelztest1.Ui.LogIn.LogInActivity;
-import com.example.ecowheelztest1.Ui.Profile.ProfileActivity;
+import com.example.ecowheelz.R;
+import com.example.ecowheelz.Ui.LogIn.LogInActivity;
+import com.example.ecowheelz.Ui.Profile.ProfileActivity;
 
 import java.util.Queue;
 
@@ -39,9 +39,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         etphoneNumber = findViewById(R.id.phoneNumber);
         btnCreate = findViewById(R.id.create);
         btnCreate.setOnClickListener(this);
-
-
-
     }
 
     @Override
@@ -65,19 +62,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 Intent intent = new Intent(RegisterActivity.this, LogInActivity.class);
                 btnCreate.setClickable(false);
                 startActivity(intent);
-            }else {
-                Toast.makeText(this, "מספר טלפון זה כבר קיים, אנא הכנס מספר אחר", Toast.LENGTH_SHORT).show();
             }
-
-            
+            else
+            {
+                Toast.makeText(this, getString(R.string.Phone_Already_Exists), Toast.LENGTH_SHORT).show();
+            }
         }
+
         if (btnBackR == view) {
             Intent intent = new Intent(RegisterActivity.this,ProfileActivity.class);
             btnBackR.setClickable(false);
             startActivity(intent);
         }
     }
-
-
-
 }

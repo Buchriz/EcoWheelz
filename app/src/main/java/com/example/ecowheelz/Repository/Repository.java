@@ -1,18 +1,30 @@
-package com.example.ecowheelztest1.Repository;
+package com.example.ecowheelz.Repository;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 
-import com.example.ecowheelztest1.DB.MyDatabaseHelper;
+import com.example.ecowheelz.DB.MyDatabaseHelper;
 
 public class Repository {
 
     private final MyDatabaseHelper databaseHelper;
     private final Context context;
-
     private SharedPreferences sharedPreferences;
     private final SharedPreferences.Editor editor;
+
+
+    public Repository(Context context) {
+        databaseHelper = new MyDatabaseHelper(context);
+        this.context = context;
+        sharedPreferences = context.getSharedPreferences("sharedPreferences",Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+    }
+
+
+    /////////////////////////////////////////
+    //         SharedPreferences
+    /////////////////////////////////////////
     public void setSharedPreferences(User user)
     {
         editor.putString("row_id", user.getRow_id());
@@ -51,16 +63,32 @@ public class Repository {
         return null;
     }
 
-    public Repository(Context context) {
-        databaseHelper = new MyDatabaseHelper(context);
-        this.context = context;
-        sharedPreferences = context.getSharedPreferences("sharedPreferences",Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+
+    //////////////////////////////////////////////////////////////////////
+    //        Add user To SQLite If The Phone Number Not Exist
+    //////////////////////////////////////////////////////////////////////
+    public boolean addUser(String userName, String email, String fullName, String phoneNumber) {
+
+        Cursor cursor = databaseHelper.readAllData();
+
+        int n = cursor.getCount();
+        cursor.moveToFirst();
+
+        for (int i = 0; i < n; i++) {
+            if (phoneNumber.equals(cursor.getString(4)))
+                return false;
+
+            cursor.moveToNext();
+        }
+
+        return databaseHelper.addUser(userName,email,fullName,phoneNumber);
     }
 
-    public boolean addUser(String userName, String email, String fullName, String phoneNumber) {
-        return addNewUserToSQLite(userName,email,fullName,phoneNumber);
-    }
+
+
+    ////////////////////////////////////////////
+    //       Get User Logged-In
+    ////////////////////////////////////////////
     public boolean getIsLoggedIn() {
         return sharedPreferences.getBoolean("isLoggedIn",false);
     }
@@ -68,17 +96,17 @@ public class Repository {
         editor.putBoolean("isLoggedIn",c);
     }
 
-    public boolean addNewUserToSQLite(String userName, String email, String fullName, String phoneNumber) {
-        return databaseHelper.addUser(userName,email,fullName,phoneNumber);
-    }
 
 
 
+
+    ////////////////////////////////////////////
+    //       Update User Information
+    ////////////////////////////////////////////
     public void updateData(String row_id, String username, String email, String fullname, String phonenumber) {
         databaseHelper.updateData(row_id,username,email,fullname,phonenumber);
         setSharedPreferences(new User(username,email,fullname,phonenumber,row_id,getSharedPreferences().getHomeLocation(),getSharedPreferences().getWorkLocation()));
     }
-
     public void updateHomeLocation(String homeLoc)
     {
         databaseHelper.updateHomeLocation(getSharedPreferences().getRow_id(),homeLoc);
@@ -89,6 +117,14 @@ public class Repository {
         databaseHelper.updateWorkLocation(getSharedPreferences().getRow_id(),workLoc);
         setSharedPreferences(new User(getSharedPreferences().getUserName(),getSharedPreferences().getEmail(),getSharedPreferences().getFullName(),getSharedPreferences().getPhoneNumber(),getSharedPreferences().getRow_id(),getSharedPreferences().getHomeLocation(),workLoc));
     }
+
+
+
+
+
+    ////////////////////////////////////////////
+    //            User Log-In
+    ////////////////////////////////////////////
     public boolean LogIn(String emailLogIn, String phoneLogIn) {
         Cursor cursor = databaseHelper.readAllData();
 
@@ -134,6 +170,12 @@ public class Repository {
         return true;
     }
 
+
+
+
+    ////////////////////////////////////////////
+    //            User Log-Out
+    ////////////////////////////////////////////
     public void LogOut() {
         sharedPreferences = context.getSharedPreferences("sharedPreferences",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

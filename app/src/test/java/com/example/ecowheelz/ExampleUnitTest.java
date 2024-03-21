@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1;
+package com.example.ecowheelz;
 
 import org.junit.Test;
 

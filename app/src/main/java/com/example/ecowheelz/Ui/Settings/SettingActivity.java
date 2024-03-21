@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1.Ui.Settings;
+package com.example.ecowheelz.Ui.Settings;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,9 +10,9 @@ import android.widget.RelativeLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
-import com.example.ecowheelztest1.R;
-import com.example.ecowheelztest1.Ui.AboutUs.AboutUs;
-import com.example.ecowheelztest1.Ui.Maps.MapsActivity;
+import com.example.ecowheelz.R;
+import com.example.ecowheelz.Ui.AboutUs.AboutUs;
+import com.example.ecowheelz.Ui.Maps.MapsActivity;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,6 +29,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
         swNightMode = findViewById(R.id.swNightMode);
         nightModeSwitch = new NightModeSwitch();
+
+        ///////////////////////////////////////
+        // Sets The Night Mode Switch On/Off
         swNightMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +76,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         }
         if (v == ChangeHLocMidLayout)
         {
+            ////////////////////////////
+            //   Changing The Layouts
             if (settingsModule.getIsLoggedIn())
             {
                 LinearLayout linearLayout = settingsModule.ChangeHomeLocationNewLayout(changeHLocLayout,ChangeHLocMidLayout);
@@ -82,6 +87,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         }
         if (v == ChangeWLocMidLayout)
         {
+            ////////////////////////////
+            //   Changing The Layouts
             if (settingsModule.getIsLoggedIn())
             {
                 LinearLayout linearLayout = settingsModule.ChangeWorkLocationNewLayout(changeWLocLayout,ChangeWLocMidLayout);

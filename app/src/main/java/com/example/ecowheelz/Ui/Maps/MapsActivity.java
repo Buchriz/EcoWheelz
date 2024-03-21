@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1.Ui.Maps;
+package com.example.ecowheelz.Ui.Maps;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -32,11 +32,11 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentActivity;
 
-import com.example.ecowheelztest1.R;
-import com.example.ecowheelztest1.Ui.Profile.ProfileActivity;
-import com.example.ecowheelztest1.Ui.Settings.NightModeSwitch;
-import com.example.ecowheelztest1.Ui.Settings.SettingActivity;
-import com.example.ecowheelztest1.databinding.ActivityMapsBinding;
+import com.example.ecowheelz.R;
+import com.example.ecowheelz.Ui.Profile.ProfileActivity;
+import com.example.ecowheelz.Ui.Settings.NightModeSwitch;
+import com.example.ecowheelz.Ui.Settings.SettingActivity;
+import com.example.ecowheelz.databinding.ActivityMapsBinding;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -115,8 +115,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         searchView.setQuery("", false);  // Set an empty query
         searchView.setIconifiedByDefault(false);  // Ensure the SearchView is not iconified (collapsed)
         searchView.setQueryHint("לאן נוסעים?");
-        SearchViewCommit(searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                SearchViewCommit(query);
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {return false;}
+        });
+        //SearchViewCommit(searchView);
 
     }
 
@@ -125,7 +134,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void onActivityResult(Boolean b) {
             if (b)
             {
-                Toast.makeText(MapsActivity.this, "Permission granted!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MapsActivity.this, getString(R.string.Permission_Granted), Toast.LENGTH_SHORT).show();
             }
         }
     });
@@ -175,14 +184,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private void SearchViewCommit(SearchView searchView) {
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
+    private void SearchViewCommit(String query) {
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
                 closeStartDriveButtons(driveButtonsRelativeLayout);
 
                 if (query.length() == 0){
-                    Toast.makeText(MapsActivity.this, "Enter destination", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MapsActivity.this, getString(R.string.Enter_Destination), Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Address address = null;
@@ -195,7 +204,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
-                        Toast.makeText(MapsActivity.this, "Error finding location. Please try again.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MapsActivity.this, getString(R.string.Error_Finding_Location), Toast.LENGTH_SHORT).show();
                     }
 
                     if (address != null) {
@@ -208,17 +217,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             buttonsAdded = true;
                         }
                     } else {
-                        Toast.makeText(MapsActivity.this, "Location not found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MapsActivity.this, getString(R.string.Location_Not_Found), Toast.LENGTH_SHORT).show();
                     }
                 }
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return false;
+//            }
+//        });
     }
     @SuppressLint("UseCompatLoadingForDrawables")
     public void addStartDriveButtons(String query) {
@@ -383,7 +392,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Intent intent = new Intent(MapsActivity.this, SettingActivity.class);
                     tvHome.setClickable(false);
                     startActivity(intent);
-                    Toast.makeText(MapsActivity.this, "הכנס מיקום בית", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MapsActivity.this, getString(R.string.Enter_Home_Location), Toast.LENGTH_SHORT).show();
                 }
                 else {
 //                    Toast.makeText(context,repository.getSharedPreferences().getHomeLocation(), Toast.LENGTH_SHORT).show();
@@ -425,7 +434,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Intent intent = new Intent(MapsActivity.this, SettingActivity.class);
                     tvWork.setClickable(false);
                     startActivity(intent);
-                    Toast.makeText(MapsActivity.this, "הכנס מיקום עבודה", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MapsActivity.this, getString(R.string.Enter_Work_Location), Toast.LENGTH_SHORT).show();
                 }
                 else {
 //                    Toast.makeText(context, repository.getSharedPreferences().getWorkLocation(), Toast.LENGTH_SHORT).show();
@@ -557,7 +566,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (startDrive == v)
         {
             if (isGPSEnabled()) {
-                Toast.makeText(this, "פה צריך להתחיל מסלול למיקום החדש", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.Need_To_Start_Routes), Toast.LENGTH_SHORT).show();
             }
             else {
                 Intent intent = new Intent(MapsActivity.this, EnableGPSActivity.class);

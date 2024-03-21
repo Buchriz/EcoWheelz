@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1.Repository;
+package com.example.ecowheelz.Repository;
 
 public class User {
 

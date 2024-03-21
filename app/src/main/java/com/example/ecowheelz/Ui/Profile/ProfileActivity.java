@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1.Ui.Profile;
+package com.example.ecowheelz.Ui.Profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,11 +11,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ecowheelztest1.R;
-import com.example.ecowheelztest1.Repository.User;
-import com.example.ecowheelztest1.Ui.LogIn.LogInActivity;
-import com.example.ecowheelztest1.Ui.Maps.MapsActivity;
-import com.example.ecowheelztest1.Ui.Register.RegisterActivity;
+import com.example.ecowheelz.R;
+import com.example.ecowheelz.Repository.User;
+import com.example.ecowheelz.Ui.LogIn.LogInActivity;
+import com.example.ecowheelz.Ui.Maps.MapsActivity;
+import com.example.ecowheelz.Ui.Register.RegisterActivity;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -51,6 +51,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         profileModule = new ProfileModule(this);
         boolean isLoggedIn = profileModule.getIsLoggedIn();
 
+
+        ////////////////////////////////////////////////////////////////
+        //      Switching Between Interfaces By User Logged-In
+        ////////////////////////////////////////////////////////////////
         if (isLoggedIn)
         {
             user = profileModule.getUserLogIn();
@@ -59,7 +63,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             fullName = user.getFullName();
             phoneNumber = user.getPhoneNumber();
             profileModule.NewLayout(pA,regiButtonLayout,tvName,userName,fullName,email,phoneNumber);
-            //btnChange.setOnClickListener(this);
         }
         else
         {
@@ -93,9 +96,5 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             alreadyRegistered.setClickable(false);
             startActivity(intent);
         }
-//        if (btnChange == v)
-//        {
-//            profileModule.updateDataDialog();
-//        }
     }
 }

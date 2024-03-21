@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1.Ui.Settings;
+package com.example.ecowheelz.Ui.Settings;
 
 public class NightModeSwitch
 {

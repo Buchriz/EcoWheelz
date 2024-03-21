@@ -1,4 +1,4 @@
-package com.example.ecowheelztest1.Ui.AboutUs;
+package com.example.ecowheelz.Ui.AboutUs;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,8 +7,8 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.ecowheelztest1.R;
-import com.example.ecowheelztest1.Ui.Settings.SettingActivity;
+import com.example.ecowheelz.R;
+import com.example.ecowheelz.Ui.Settings.SettingActivity;
 
 public class AboutUs extends AppCompatActivity {
 

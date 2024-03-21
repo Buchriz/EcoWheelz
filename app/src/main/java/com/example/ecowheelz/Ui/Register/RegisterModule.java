@@ -1,8 +1,8 @@
-package com.example.ecowheelztest1.Ui.Register;
+package com.example.ecowheelz.Ui.Register;
 
 import android.content.Context;
 
-import com.example.ecowheelztest1.Repository.Repository;
+import com.example.ecowheelz.Repository.Repository;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -21,6 +21,11 @@ public class RegisterModule {
         repository = new Repository(context);
         this.context = context;
     }
+
+
+    ////////////////////////////////////////////////////
+    //      Checking the Register Information
+    ////////////////////////////////////////////////////
     Queue<String> checkErrors()
     {
         Queue<String> qErrors = new LinkedList<>();
@@ -77,6 +82,11 @@ public class RegisterModule {
         return qErrors;
     }
 
+
+
+    ////////////////////////////////////
+    //      Add User To SQLite
+    ////////////////////////////////////
     boolean OnSuccess(){
         return repository.addUser(userName,email,fullName,phoneNumber);
     }

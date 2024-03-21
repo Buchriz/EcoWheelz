@@ -1,8 +1,8 @@
-package com.example.ecowheelztest1.Ui.LogIn;
+package com.example.ecowheelz.Ui.LogIn;
 
 import android.content.Context;
 
-import com.example.ecowheelztest1.Repository.Repository;
+import com.example.ecowheelz.Repository.Repository;
 
 public class LogInModule {
     private String emailLogIn,phoneLogIn;
