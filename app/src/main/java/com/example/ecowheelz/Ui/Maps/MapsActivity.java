@@ -1,5 +1,7 @@
 package com.example.ecowheelz.Ui.Maps;
 
+import static android.content.ContentValues.TAG;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +51,10 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
+import com.google.maps.DirectionsApiRequest;
+import com.google.maps.GeoApiContext;
+import com.google.maps.PendingResult;
+import com.google.maps.model.DirectionsResult;
 
 import java.io.IOException;
 import java.util.List;
@@ -70,6 +77,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private MapsModule mapsModule;
     private NightModeSwitch nightModeSwitch;
 
+    private GeoApiContext geoApiContext = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +134,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public boolean onQueryTextChange(String newText) {return false;}
         });
         //SearchViewCommit(searchView);
+
+        if (geoApiContext == null)
+        {
+            geoApiContext = new GeoApiContext.Builder().apiKey(getString(R.string.API_Key)).build();
+        }
 
     }
 
@@ -566,7 +579,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (startDrive == v)
         {
             if (isGPSEnabled()) {
-                Toast.makeText(this, getString(R.string.Need_To_Start_Routes), Toast.LENGTH_SHORT).show();
+                calculateDirections();
+                //Toast.makeText(this, getString(R.string.Need_To_Start_Routes), Toast.LENGTH_SHORT).show();
             }
             else {
                 Intent intent = new Intent(MapsActivity.this, EnableGPSActivity.class);
@@ -575,5 +589,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
 
+    }
+
+    private void calculateDirections() {
+        DirectionsApiRequest directions = new DirectionsApiRequest(geoApiContext);
+        directions.alternatives(true);
+        directions.origin(String.valueOf(currentLatLng));
+
+
+        directions.destination(String.valueOf(destinationLatLng)).setCallback(new PendingResult.Callback<DirectionsResult>() {
+            @Override
+            public void onResult(DirectionsResult result) {
+                Toast.makeText(MapsActivity.this, "dfdf", Toast.LENGTH_SHORT).show();
+
+                Log.d(TAG, "calculateDirections: routes " + result.routes[0].toString());
+                Log.d(TAG, "calculateDirections: duration " + result.routes[0].legs[0].duration);
+                Log.d(TAG, "calculateDirections: distance " + result.routes[0].legs[0].distance);
+                Log.d(TAG, "calculateDirections: geocodedWayPoints " + result.geocodedWaypoints[0].toString());
+            }
+
+            @Override
+            public void onFailure(Throwable e) {
+                Log.d(TAG, "calculateDirections: Failed to get directions" + e.getMessage());
+            }
+        });
     }
 }
