@@ -133,7 +133,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public boolean onQueryTextChange(String newText) {return false;}
         });
-        //SearchViewCommit(searchView);
+
+
+
 
         if (geoApiContext == null)
         {
@@ -198,49 +200,48 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     private void SearchViewCommit(String query) {
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-                closeStartDriveButtons(driveButtonsRelativeLayout);
 
-                if (query.length() == 0){
-                    Toast.makeText(MapsActivity.this, getString(R.string.Enter_Destination), Toast.LENGTH_SHORT).show();
+        closeStartDriveButtons(driveButtonsRelativeLayout);
+
+        if (query.length() == 0){
+            Toast.makeText(MapsActivity.this, getString(R.string.Enter_Destination), Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Address address = null;
+            Geocoder geocoder = new Geocoder(MapsActivity.this);
+
+            try {
+                List<Address> addresses = geocoder.getFromLocationName(query, 1);
+                if (addresses != null && !addresses.isEmpty()) {
+                    address = addresses.get(0);
                 }
-                else {
-                    Address address = null;
-                    Geocoder geocoder = new Geocoder(MapsActivity.this);
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(MapsActivity.this, getString(R.string.Error_Finding_Location), Toast.LENGTH_SHORT).show();
+            }
 
-                    try {
-                        List<Address> addresses = geocoder.getFromLocationName(query, 1);
-                        if (addresses != null && !addresses.isEmpty()) {
-                            address = addresses.get(0);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Toast.makeText(MapsActivity.this, getString(R.string.Error_Finding_Location), Toast.LENGTH_SHORT).show();
-                    }
+            if (address != null) {
+                destinationLatLng = new LatLng(address.getLatitude(), address.getLongitude());
 
-                    if (address != null) {
-                        destinationLatLng = new LatLng(address.getLatitude(), address.getLongitude());
-                        map.addMarker(new MarkerOptions().position(destinationLatLng));
-                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
+                if (Same_Places() <= 15) // Within 15 meters
+                {
+                    Toast.makeText(MapsActivity.this, getString(R.string.Already_At_Your_Destination), Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    map.addMarker(new MarkerOptions().position(destinationLatLng));
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
 
-                        if (!buttonsAdded) {
-                            addStartDriveButtons(query);
-                            buttonsAdded = true;
-                        }
-                    } else {
-                        Toast.makeText(MapsActivity.this, getString(R.string.Location_Not_Found), Toast.LENGTH_SHORT).show();
+                    if (!buttonsAdded) {
+                        addStartDriveButtons(query);
+                        buttonsAdded = true;
                     }
                 }
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                return false;
-//            }
-//        });
+
+            } else {
+                Toast.makeText(MapsActivity.this, getString(R.string.Location_Not_Found), Toast.LENGTH_SHORT).show();
+            }
+        }
     }
     @SuppressLint("UseCompatLoadingForDrawables")
     public void addStartDriveButtons(String query) {
@@ -377,16 +378,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public RelativeLayout Saved_places(GoogleMap map){
+
+        /////////////////////////////////////////////
+        //            Container Layout
+        /////////////////////////////////////////////
         RelativeLayout relativeLayout = new RelativeLayout(this);
 
         RelativeLayout.LayoutParams RlayoutParams = new RelativeLayout.LayoutParams(640,100);
         RlayoutParams.addRule(RelativeLayout.BELOW, R.id.searchView); // Set the linear layout below the search view
         RlayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         RlayoutParams.setMargins(77,-1,0,0);
+
         relativeLayout.setLayoutParams(RlayoutParams);
         relativeLayout.setBackgroundColor(Color.WHITE);
 
 
+        /////////////////////////////////////////////
+        //            Home Text View
+        /////////////////////////////////////////////
         tvHome = new TextView(this);
         RelativeLayout.LayoutParams tvHParams = new RelativeLayout.LayoutParams(320,-1);
         tvHParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -407,28 +416,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     startActivity(intent);
                     Toast.makeText(MapsActivity.this, getString(R.string.Enter_Home_Location), Toast.LENGTH_SHORT).show();
                 }
-                else {
-//                    Toast.makeText(context,repository.getSharedPreferences().getHomeLocation(), Toast.LENGTH_SHORT).show();
-//                    map.addMarker(new MarkerOptions().position(homeLatLng));
-//                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(homeLatLng, 16.7f), 1000, null);
-
+                else
+                {
                     map.clear();
                     destinationLatLng = new LatLng(mapsModule.getLocation(str).getLatitude(), mapsModule.getLocation(str).getLongitude());
-                    map.addMarker(new MarkerOptions().position(destinationLatLng));
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
+//                    map.addMarker(new MarkerOptions().position(destinationLatLng));
+//                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
 
-                    if (buttonsAdded)
+
+                    if (Same_Places() <= 15) // Within 15 meters
                     {
-                        closeStartDriveButtons(driveButtonsRelativeLayout);
+                        Toast.makeText(MapsActivity.this, getString(R.string.Already_At_Your_Destination), Toast.LENGTH_SHORT).show();
                     }
-                    addStartDriveButtons(str);
-                    buttonsAdded = true;
-                    tvHome.setClickable(false);
+                    else
+                    {
+                        map.addMarker(new MarkerOptions().position(destinationLatLng));
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
 
+                        if (buttonsAdded)
+                        {
+                            closeStartDriveButtons(driveButtonsRelativeLayout);
+                        }
+                        addStartDriveButtons(str);
+                        buttonsAdded = true;
+                        tvHome.setClickable(false);
+                    }
                 }
             }
         });
 
+
+        /////////////////////////////////////////////
+        //            Work Text View
+        /////////////////////////////////////////////
         tvWork = new TextView(this);
         RelativeLayout.LayoutParams tvWParams = new RelativeLayout.LayoutParams(320,-1);
         tvWParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
@@ -450,26 +470,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Toast.makeText(MapsActivity.this, getString(R.string.Enter_Work_Location), Toast.LENGTH_SHORT).show();
                 }
                 else {
-//                    Toast.makeText(context, repository.getSharedPreferences().getWorkLocation(), Toast.LENGTH_SHORT).show();
-//                    map.addMarker(new MarkerOptions().position(workLatLng));
-//                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(workLatLng, 16.7f), 1000, null);
-
                     map.clear();
                     destinationLatLng = new LatLng(mapsModule.getLocation(str).getLatitude(), mapsModule.getLocation(str).getLongitude());
-                    map.addMarker(new MarkerOptions().position(destinationLatLng));
-                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
 
-                    if (buttonsAdded) {
-                        closeStartDriveButtons(driveButtonsRelativeLayout);
+                    if (Same_Places() <= 15) // Within 15 meters
+                    {
+                        Toast.makeText(MapsActivity.this, getString(R.string.Already_At_Your_Destination), Toast.LENGTH_SHORT).show();
                     }
-                    addStartDriveButtons(str);
-                    buttonsAdded = true;
-                    tvWork.setClickable(false);
+                    else
+                    {
+                        map.addMarker(new MarkerOptions().position(destinationLatLng));
+                        map.animateCamera(CameraUpdateFactory.newLatLngZoom(destinationLatLng, 16.7f), 1000, null);
+
+                        if (buttonsAdded) {
+                            closeStartDriveButtons(driveButtonsRelativeLayout);
+                        }
+                        addStartDriveButtons(str);
+                        buttonsAdded = true;
+                        tvWork.setClickable(false);
+                    }
+
                 }
             }
         });
 
 
+        /////////////////////////////////////////////////////////////
+        //      Switching Between Backgrounds In Night Mode
+        /////////////////////////////////////////////////////////////
         NightModeSwitch nightModeSwitch = new NightModeSwitch();
         if (nightModeSwitch.GetNightModSwitch())
         {
@@ -530,6 +558,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
+                            currentLatLng = new LatLng(location.getLatitude(),location.getLongitude());
                             map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 16.7f), 1000, null);
                         }
                     }
@@ -590,6 +619,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     }
+
+
+    public float Same_Places()
+    {
+        float distance = 0;
+        if (currentLatLng != null)
+        {
+            Location currentLocation = new Location("current");
+            currentLocation.setLatitude(currentLatLng.latitude);
+            currentLocation.setLongitude(currentLatLng.longitude);
+
+            Location destinationLocation = new Location("destination");
+            destinationLocation.setLatitude(destinationLatLng.latitude);
+            destinationLocation.setLongitude(destinationLatLng.longitude);
+
+            distance = currentLocation.distanceTo(destinationLocation);
+        }
+        return distance;
+    }
+
 
     private void calculateDirections() {
         DirectionsApiRequest directions = new DirectionsApiRequest(geoApiContext);

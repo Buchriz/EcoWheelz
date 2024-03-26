@@ -22,6 +22,7 @@
     <string name="Enter_Home_Location">הכנס מיקום בית</string>
     <string name="Enter_Work_Location">הכנס מיקום עבודה</string>
     <string name="Need_To_Start_Routes">פה צריך להתחיל מסלול למיקום החדש</string>
+    <string name="Already_At_Your_Destination">You are already at your location.</string>
 
     //////////////////////////////
     //      Register Toast
